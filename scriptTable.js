@@ -1,33 +1,26 @@
 function convertToTable(input) {
-    // Split the input based on spaces and commas
-    const itemsArray = input.split(/[\s,]+/);
+    // Split the input based on either a comma or a space
+    const itemsArray = input.split(/[, ]+/);
 
-    // Create an empty string to store the formatted list
-    let resultList = '';
+    // Create an empty string to store the formatted table
+    let tableRows = '';
 
-    // Format each item and add it to the resultList
-    itemsArray.forEach((item, index) => {
-        resultList += `${item}\n`;
+    // Loop through the itemsArray and format each item
+    itemsArray.forEach((item) => {
+        // Remove leading and trailing whitespaces
+        const trimmedItem = item.trim();
+        // Add a new row to the table with the item as the content of the cell
+        tableRows += `<tr><td>${trimmedItem}</td></tr>`;
     });
 
-    return resultList;
+    return tableRows;
 }
 
 function formatTable() {
-    const inputList = document.getElementById('numberList').value;
-    const formattedList = convertToTable(inputList);
-    const formattedTable = document.getElementById('formattedTable');
+    const inputItemList = document.getElementById('itemList').value;
+    const formattedTable = convertToTable(inputItemList);
+    const formattedTableElement = document.getElementById('formattedTable');
 
-    // Clear existing table rows
-    formattedTable.innerHTML = '';
-
-    // Split the formattedList into an array of lines
-    const lines = formattedList.trim().split('\n');
-
-    // Create a new row for each line and add it to the table
-    lines.forEach((line) => {
-        const newRow = formattedTable.insertRow();
-        const newCell = newRow.insertCell();
-        newCell.textContent = line;
-    });
+    // Update the formatted table in the HTML
+    formattedTableElement.innerHTML = formattedTable;
 }
