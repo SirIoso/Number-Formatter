@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Formatted Table of Devoli</title>
+</head>
+<body>
+
+<div>
+  <ul>
+    <li><a href="list.html">List</a></li>
+    <li><a href="table.html">Table</a></li>
+    <li><a href="port.html">Port</a></li>
+    <li><a href="devoli.html">Devoli</a></li>
+  </ul>
+</div>
+
+<label>Paste text here<br><br>
+  <textarea id="ipmsList" rows="8" cols="50">09 12344232, 01 56789</textarea>
+</label>
+<br>
+<button onclick="formatIpms()">Create Table</button>
+<div>
+  <h2>Formatted Table of Devoli:</h2>
+  <p id="counter"></p>
+  <table id="formattedIpms" style="border-collapse: collapse;">
+    <!-- The table will be populated dynamically -->
+  </table>
+</div>
+
+<script src="scriptIPMS.js"></script>
+</body>
+</html>
