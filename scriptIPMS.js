@@ -20,9 +20,9 @@ function convertToIpms(input) {
 }
 
 function formatIpms() {
-    const inputIpmsList = document.getElementById('devoliList').value;
-    const { tableRows, itemCount } = convertToDevoli(inputDevoliList);
-    const formattedTableElement = document.getElementById('formattedDevoli');
+    const inputIpmsList = document.getElementById('ipmsList').value;
+    const { tableRows, itemCount } = convertToIpms(inputIpmsList);
+    const formattedTableElement = document.getElementById('formattedIpms');
     const counterElement = document.getElementById('counter');
 
     // Update the formatted table in the HTML
