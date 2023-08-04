@@ -1,4 +1,4 @@
-function convertToDevoli(input) {
+function convertToIpms(input) {
     // Split the input based on either a comma or a space
     const itemsArray = input.split(/[, ]+/);
 
@@ -19,8 +19,8 @@ function convertToDevoli(input) {
     return { tableRows, itemCount };
 }
 
-function formatDevoli() {
-    const inputDevoliList = document.getElementById('devoliList').value;
+function formatIpms() {
+    const inputIpmsList = document.getElementById('devoliList').value;
     const { tableRows, itemCount } = convertToDevoli(inputDevoliList);
     const formattedTableElement = document.getElementById('formattedDevoli');
     const counterElement = document.getElementById('counter');
