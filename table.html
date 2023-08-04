@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Formatted Table of Items</title>
+</head>
+<body>
+
+<div>
+  <ul>
+    <li><a href="list.html">List</a></li>
+    <li><a href="table.html">Table</a></li>
+    <li><a href="port.html">Port</a></li>
+  </ul>
+</div>
+
+<label>Paste text here<br><br>
+  <textarea id="itemList" rows="8" cols="50">ASB21231231 adasd1212 XYZ1234, PQR5678</textarea>
+</label>
+<br>
+<button onclick="formatTable()">Create Table</button>
+<div>
+  <h2>Formatted Table:</h2>
+  <table id="formattedTable" style="border-collapse: collapse;">
+    <!-- The table will be populated dynamically -->
+  </table>
+</div>
+
+<script src="scriptTable.js"></script>
+</body>
+</html>
