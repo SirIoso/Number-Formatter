@@ -36,7 +36,7 @@ function formatNumber(num) {
     // If num is a string, convert it to an integer
     const number = typeof num === 'string' ? parseInt(num) : num;
     // Separate the first two characters from the rest with a space
-    return number.toString().slice(0, 2) + ' ' + number.toString().slice(2);
+    return number.toString().slice(0, 2) + number.toString().slice(2);
 }
 
 function formatPort() {
