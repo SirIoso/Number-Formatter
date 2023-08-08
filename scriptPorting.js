@@ -33,3 +33,27 @@ function formatPort() {
     // Update the item count in the HTML
     counterElement.textContent = `Total items: ${itemCount}`;
 }
+
+function copyText() {
+    // Get the formatted list element
+    var formattedPortDiv = document.getElementById("formattedPort");
+
+    // Create a range to select the div content
+    var range = document.createRange();
+    range.selectNode(formattedPortDiv);
+
+    // Select the range
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+
+    // Copy the selected text
+    try {
+        document.execCommand("copy");
+        alert("List copied to clipboard!");
+    } catch (err) {
+        alert("Unable to copy the list. Your browser may not support this feature.");
+    }
+
+    // Clear the selection
+    window.getSelection().removeAllRanges();
+}
