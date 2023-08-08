@@ -7,8 +7,8 @@ function convertToIpms(input) {
 
     // Loop through the itemsArray and format each item
     itemsArray.forEach((item) => {
-        // Replace the first '0' with '64'
-        const formattedItem = item.replace(/^0/, '');
+        // Remove the first two characters and replace them with '0'
+        const formattedItem = '0' + item.substring(2);
         // Add a new row to the table with the formatted item as the content of the cell
         tableRows += `<tr><td>${formattedItem}</td></tr>`;
     });
