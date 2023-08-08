@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Formatted List of Items</title>
+  <title>Formatted Table of Ports</title>
 </head>
 <body>
 
@@ -18,16 +18,19 @@
 </div>
 
 <label>Paste text here<br><br>
-  <textarea id="itemList" rows="8" cols="50">ASB21231231 adasd1212 XYZ1234, PQR5678</textarea>
+  <textarea id="portList" rows="8" cols="50">ASB21231231 adasd1212 XYZ1234, PQR5678</textarea>
 </label>
 <br>
-<button onclick="formatList()">Create Formatted List</button>
+<button onclick="formatPort()">Create Table</button>
 <div>
-  <h2>Formatted List of Items:</h2>
+  <h2>Formatted Table of Ports:</h2>
+  <p id="counter"></p>
   <button onclick="copyText()">Copy Text</button>
-  <div id="formattedList"></div>
+  <table id="formattedPort" style="border-collapse: collapse;">
+    <!-- The table will be populated dynamically -->
+  </table>
 </div>
 
-<script src="scriptList.js"></script>
+<script src="change.js"></script>
 </body>
 </html>

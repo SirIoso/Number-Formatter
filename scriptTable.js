@@ -1,6 +1,6 @@
 function convertToTable(input) {
     // Split the input based on either a comma or a space
-    const itemsArray = input.split(/[, ]+/);
+    const itemsArray = input.split(/[, \n]+/);
 
     // Create an empty string to store the formatted table
     let tableRows = '';

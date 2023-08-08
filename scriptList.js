@@ -1,6 +1,6 @@
 function convertToList(input) {
     // Split the input based on spaces and commas
-    const itemsArray = input.split(/[\s,]+/);
+    const itemsArray = input.split(/[, \n]+/);
 
     // Create an empty string to store the formatted list
     let resultList = '';
