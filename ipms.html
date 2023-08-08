@@ -18,13 +18,13 @@
 </div>
 
 <label>Paste text here<br><br>
-  <textarea id="ipmsList" rows="8" cols="50">09 12344232, 01 56789</textarea>
+  <textarea id="ipmsList" rows="8" cols="50" placeholder="Paste your 64xxxxxx or 61xxxxx numbers here. They can be separated by commas or spaces. It will return in the format 0xxxxxxx."></textarea>
 </label>
 <br>
 <button onclick="formatIpms()">Create Table</button>
 
 <div>
-  <h2>Formatted Table of Devoli:</h2>
+  <h2>Numbers for IPMS 64xxxxxxx to 0xxxxxxx:</h2>
   <p id="counter"></p>
   <button onclick="copyText()">Copy Text</button>
   <table id="formattedIpms" style="border-collapse: collapse;">

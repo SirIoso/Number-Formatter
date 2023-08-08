@@ -18,12 +18,12 @@
 </div>
 
 <label>Paste text here<br><br>
-  <textarea id="portList" rows="8" cols="50">ASB21231231 adasd1212 XYZ1234, PQR5678</textarea>
+  <textarea id="portList" rows="8" cols="50" placeholder="Paste your numbers here. They can be separated by commas or spaces and can include individual numbers too. Make sure the list doesn't end with a space or comma. There should be no spaces between dashes. Currently doesn't deal with numbers staring with zero soz lol."></textarea>
 </label>
 <br>
-<button onclick="formatPort()">Create Table</button>
+<button onclick="formatPort()">Create Range</button>
 <div>
-  <h2>Formatted Table of Ports:</h2>
+  <h2>All Ports in the Range</h2>
   <p id="counter"></p>
   <button onclick="copyText()">Copy Text</button>
   <table id="formattedPort" style="border-collapse: collapse;">

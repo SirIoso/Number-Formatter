@@ -18,12 +18,12 @@
 </div>
 
 <label>Paste text here<br><br>
-  <textarea id="devoliList" rows="8" cols="50">09 12344232, 01 56789</textarea>
+  <textarea id="devoliList" rows="8" cols="50" placeholder="Paste your 0xxxxxx numbers here. They can be separated by commas or spaces. It will return in the format 64xxxxxxx."></textarea>
 </label>
 <br>
-<button onclick="formatDevoli()">Create Table</button>
+<button onclick="formatDevoli()">Create Number for Devoli</button>
 <div>
-  <h2>Formatted Table of Devoli:</h2>
+  <h2>0xxxxxx to 64xxxxxxx </h2>
   <p id="counter"></p>
   <button onclick="copyText()">Copy Text</button>
   <table id="formattedDevoli" style="border-collapse: collapse;">

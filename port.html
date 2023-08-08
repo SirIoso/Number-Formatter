@@ -18,12 +18,12 @@
 </div>
 
 <label>Paste text here<br><br>
-  <textarea id="portList" rows="8" cols="50">ASB21231231 adasd1212 XYZ1234, PQR5678</textarea>
+  <textarea id="portList" rows="8" cols="50" placeholder="Paste your 0xxxxxx numbers here. They can be separated by commas or spaces. It will return in the format 0x xxxxxx."></textarea>
 </label>
 <br>
-<button onclick="formatPort()">Create Table</button>
+<button onclick="formatPort()">Create Billing Ports</button>
 <div>
-  <h2>Formatted Table of Ports:</h2>
+  <h2>Formatted Ports for Billing:</h2>
   <p id="counter"></p>
   <button onclick="copyText()">Copy Text</button>
   <table id="formattedPort" style="border-collapse: collapse;">

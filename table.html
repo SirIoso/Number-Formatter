@@ -18,14 +18,14 @@
 </div>
 
 <label>Paste text here<br><br>
-  <textarea id="itemList" rows="8" cols="50">ASB21231231 adasd1212 XYZ1234, PQR5678</textarea>
+  <textarea id="itemList" rows="8" cols="50" placeholder="Paste your numbers separated by commas and this will create a list for you to copy into excel if you need."></textarea>
 </label>
 <br>
 <button onclick="formatTable()">Create Table</button>
-<br>
-<button onclick="copyText()">Copy Text</button>
+
 <div>
   <h2>Formatted Table:</h2>
+  <button onclick="copyText()">Copy Text</button>
   <table id="formattedTable" style="border-collapse: collapse;">
     <!-- The table will be populated dynamically -->
   </table>
