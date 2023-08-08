@@ -9,8 +9,15 @@ function convertToPort(input) {
     itemsArray.forEach((item) => {
         // Remove leading and trailing whitespaces
         const trimmedItem = item.trim();
+
+        // Replace numbers starting with 61 or 64 with 0
+        const replacedItem = trimmedItem.startsWith('61') || trimmedItem.startsWith('64')
+            ? '0' + trimmedItem.slice(2)
+            : trimmedItem;
+
         // Separate the first two characters from the rest with a space
-        const formattedItem = trimmedItem.slice(0, 2) + ' ' + trimmedItem.slice(2);
+        const formattedItem = replacedItem.slice(0, 2) + ' ' + replacedItem.slice(2);
+
         // Add a new row to the table with the formatted item as the content of the cell
         tableRows += `<tr><td>${formattedItem}</td></tr>`;
     });
