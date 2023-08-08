@@ -20,18 +20,21 @@ function convertToPort(input) {
                 const endNum = parseInt(rangeParts[1], 10); // Parse as base 10
                 // Add all numbers in the range to the tableRows
                 for (let num = startNum; num <= endNum; num++) {
-                    // Format the number and add it to the tableRows
+                    // Format the number, remove leading zero, and add it to the tableRows
                     tableRows += `<tr><td>${formatNumber(num, maxLength)}</td></tr>`;
                 }
             }
         } else {
-            // Format the number and add it to the tableRows
-            tableRows += `<tr><td>${formatNumber(trimmedItem, maxLength)}</td></tr>`;
+            // Remove leading zero if present
+            const trimmedWithoutLeadingZero = trimmedItem.replace(/^0+/, '');
+            // Format the number, add a zero, and add it to the tableRows
+            tableRows += `<tr><td>${formatNumber('0' + trimmedWithoutLeadingZero, maxLength)}</td></tr>`;
         }
     });
 
     return tableRows;
 }
+
 
 function getMaxNumberLength(itemsArray) {
     let maxLength = 0;
