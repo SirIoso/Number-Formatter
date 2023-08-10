@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" type="text/css" href="styles.css" />
+  <title>Formatted Table of Devoli</title>
+</head>
+<body>
+
+<div>
+  <ul>
+    <li><a href="list.html">List for BAU Ops</a></li>
+    <li><a href="table.html">Table</a></li>
+    <li><a href="port.html">Billing Format</a></li>
+    <li><a href="ipms.html">IPMS Format</a></li>
+    <li><a href="devoli.html" class="active">Devoli Format</a></li>
+    <li><a href="range.html">Range Format</a></li>
+    <li><a href="portingrequest.html">Port Range Format</a></li>
+    <li><a href="change.html">Change to 0xxxxxxx</a></li>
+  </ul>
+</div>
+<h1>Porting Format</h1>
+<label>
+  <textarea id="portList" rows="8" cols="50" placeholder="Paste your list here. Port number: etc .They can be separated by commas or spaces and can include individual numbers too. Make sure the list doesn't end with a space or comma. There should be no spaces between dashes."></textarea>
+</label>
+<br>
+<button onclick="formatPort()">Create Porting Range</button>
+<div>
+  <h2>All Ports in the Range  with 0 in front</h2>
+  <p id="counter"></p>
+  <button onclick="copyText()">Copy Text</button>
+  <table id="formattedPort" style="border-collapse: collapse;">
+  </table>
+</div>
+<script src="scriptPortingRequest.js"></script>
+</body>
+</html>
