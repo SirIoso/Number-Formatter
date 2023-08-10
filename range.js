@@ -1,63 +1,50 @@
 function convertToPort(input) {
-    // Split the input based on either a comma or a space or new line?
+    // Split the input based on either a comma, space, or new line
     const itemsArray = input.split(/[, \n]+/);
 
     // Create an empty string to store the formatted table
     let tableRows = '';
 
-    // Determine the maximum length of numbers in the input
-    const maxLength = getMaxNumberLength(itemsArray);
-
     // Loop through the itemsArray and format each item
     itemsArray.forEach((item) => {
         // Remove leading and trailing whitespaces
         const trimmedItem = item.trim();
+
+        // Skip processing if the item contains only zeros or spaces
+        if (/^[0\s]+$/.test(trimmedItem)) {
+            return;
+        }
+
         // Check if the item contains a range of numbers (e.g., 987262 - 987265)
         if (trimmedItem.includes('-')) {
             const rangeParts = trimmedItem.split('-');
             if (rangeParts.length === 2) {
                 const startNum = parseInt(rangeParts[0], 10); // Parse as base 10
                 const endNum = parseInt(rangeParts[1], 10); // Parse as base 10
+
                 // Add all numbers in the range to the tableRows
                 for (let num = startNum; num <= endNum; num++) {
-                    // Format the number, remove leading zero, and add it to the tableRows
-                    tableRows += `<tr><td>${formatNumber(num, maxLength)}</td></tr>`;
+                    // Format the number and add it to the tableRows
+                    tableRows += `<tr><td>${formatNumberWithLeadingZero(num)}</td></tr>`;
                 }
             }
         } else {
-            // Remove leading zero if present
-            const trimmedWithoutLeadingZero = trimmedItem.replace(/^0+/, '');
-            // Format the number, add a zero, and add it to the tableRows
-            tableRows += `<tr><td>${formatNumber('0' + trimmedWithoutLeadingZero, maxLength)}</td></tr>`;
+            // Add a leading zero if the number doesn't start with zero
+            const formattedItem = trimmedItem.startsWith('0')
+                ? trimmedItem
+                : '0' + trimmedItem;
+
+            // Format the number and add it to the tableRows
+            tableRows += `<tr><td>${formatNumberWithLeadingZero(formattedItem)}</td></tr>`;
         }
     });
 
     return tableRows;
 }
 
-
-function getMaxNumberLength(itemsArray) {
-    let maxLength = 0;
-    itemsArray.forEach((item) => {
-        if (item.includes('-')) {
-            const rangeParts = item.split('-');
-            if (rangeParts.length === 2) {
-                const startNum = parseInt(rangeParts[0], 10); // Parse as base 10
-                const endNum = parseInt(rangeParts[1], 10); // Parse as base 10
-                const rangeMaxLength = Math.max(startNum.toString().length, endNum.toString().length);
-                maxLength = Math.max(maxLength, rangeMaxLength);
-            }
-        } else {
-            const trimmedItem = item.trim();
-            maxLength = Math.max(maxLength, trimmedItem.length);
-        }
-    });
-    return maxLength;
-}
-
-function formatNumber(num, maxLength) {
-    // Convert the number to a string and pad with zeros to the determined maxLength
-    return num.toString().padStart(maxLength, '0');
+function formatNumberWithLeadingZero(num) {
+    // Add a leading zero if the number doesn't start with zero
+    return num.toString().startsWith('0') ? num : '0' + num;
 }
 
 function formatPort() {
