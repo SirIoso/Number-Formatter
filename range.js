@@ -10,6 +10,11 @@ function convertToPort(input) {
         // Remove leading and trailing whitespaces
         const trimmedItem = item.trim();
 
+        // Skip processing if the item contains only zeros or spaces
+        if (/^[0\s]+$/.test(trimmedItem)) {
+            return;
+        }
+
         // Check if the item contains a range of numbers (e.g., 987262 - 987265)
         if (trimmedItem.includes('-')) {
             const rangeParts = trimmedItem.split('-');
