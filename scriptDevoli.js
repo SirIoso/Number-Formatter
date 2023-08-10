@@ -7,8 +7,9 @@ function convertToDevoli(input) {
 
     // Loop through the itemsArray and format each item
     itemsArray.forEach((item) => {
-        // Replace the first '0' with '64'
-        const formattedItem = item.replace(/^0/, '64');
+        // If the item starts with '0', keep it as is; otherwise, add '64'
+        const formattedItem = item.startsWith('0') ? item.replace(/^0/, '64') : '64' + item;
+
         // Add a new row to the table with the formatted item as the content of the cell
         tableRows += `<tr><td>${formattedItem}</td></tr>`;
     });
