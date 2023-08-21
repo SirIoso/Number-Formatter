@@ -1,29 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" type="text/css" href="styles.css" />
   <title>Formatted Table of Ports</title>
 </head>
 <body>
-
-<div>
-  <ul>
-    <li><a href="list.html">List for BAU Ops</a></li>
-    <li><a href="table.html">Table</a></li>
-    <li><a href="port.html" class="active">Billing Format</a></li>
-    <li><a href="ipms.html">IPMS Format</a></li>
-    <li><a href="devoli.html">Devoli Format</a></li>
-    <li><a href="range.html">Range Format</a></li>
-    <li><a href="portingrequest.html">Port Range Format</a></li>
-    <li><a href="change.html">Change to 0xxxxxxx</a></li>
-  </ul>
-</div>
 <h1>Billing Format</h1>
 <label>
   <textarea id="portList" rows="8" cols="50" placeholder="Paste your 0xxxxxx numbers here. They can be separated by commas or spaces. It will return in the format 0x xxxxxx."></textarea>
 </label>
 <br>
-<button onclick="formatPort()">Create Billing Ports</button>
+<button onclick="formatPort(0)">Create Billing Ports (DDI)</button>&nbsp;&nbsp;
+<button onclick="formatPort(1)">Create Billing Ports (Sipline & DDI)</button>
 <div>
   <h2>Formatted Ports for Billing:</h2>
   <p id="counter"></p>
@@ -31,7 +18,6 @@
   <table id="formattedPort" style="border-collapse: collapse;">
   </table>
 </div>
-
 <script src="scriptPorting.js"></script>
 </body>
 </html>
