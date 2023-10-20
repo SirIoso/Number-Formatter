@@ -55,3 +55,9 @@ function copyText() {
     // Clear the selection
     window.getSelection().removeAllRanges();
 }
+
+const textarea = document.getElementById("portList");
+
+textarea.addEventListener("focus", function() {
+  textarea.value = ""; // Clear the textarea content
+});
