@@ -48,7 +48,7 @@ function copyText() {
     // Copy the selected text
     try {
         document.execCommand("copy");
-        alert("List copied to clipboard!");
+        // alert("List copied to clipboard!");
     } catch (err) {
         alert("Unable to copy the list. Your browser may not support this feature.");
     }
@@ -56,3 +56,9 @@ function copyText() {
     // Clear the selection
     window.getSelection().removeAllRanges();
 }
+
+const textarea = document.getElementById("devoliList");
+
+textarea.addEventListener("focus", function() {
+  textarea.value = ""; // Clear the textarea content
+});
