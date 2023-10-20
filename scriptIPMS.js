@@ -56,7 +56,7 @@ function copyText() {
     window.getSelection().removeAllRanges();
 }
 
-const textarea = document.getElementById("portList");
+const textarea = document.getElementById("ipmsList");
 
 textarea.addEventListener("focus", function() {
   textarea.value = ""; // Clear the textarea content
