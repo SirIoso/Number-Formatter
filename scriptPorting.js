@@ -53,9 +53,7 @@ function formatPort(addSip) {
 
     // Update the item count in the HTML
     counterElement.textContent = `Total items: ${itemCount}`;
-}
-
-function copyText() {
+	
     // Get the formatted list element
     var formattedPortDiv = document.getElementById("formattedPort");
 
