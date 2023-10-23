@@ -31,9 +31,7 @@ function formatDevoli() {
 
     // Update the item count in the HTML
     counterElement.textContent = `Total items: ${itemCount}`;
-}
 
-function copyText() {
     // Get the formatted list element
     var formattedDevoliDiv = document.getElementById("formattedDevoli");
 
