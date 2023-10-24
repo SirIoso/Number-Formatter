@@ -37,9 +37,7 @@ function formatNumber(num) {
     const number = typeof num === 'string' ? parseInt(num) : num;
     // Separate the first two characters from the rest with a space
     return "0" + number.toString().slice(2, 3)+ " " + number.toString().slice(3);
-}
 
-function formatPort() {
     const inputPortList = document.getElementById('portList').value;
     const tableRows = convertToPort(inputPortList);
     const formattedTableElement = document.getElementById('formattedPort');
