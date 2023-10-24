@@ -45,7 +45,7 @@ function formatPort() {
     // Copy the selected text
     try {
         document.execCommand("copy");
-        alert("Table copied to clipboard!");
+        // alert("Table copied to clipboard!");
     } catch (err) {
         alert("Unable to copy the table. Your browser may not support this feature.");
     }
@@ -53,3 +53,9 @@ function formatPort() {
     // Clear the selection
     window.getSelection().removeAllRanges();
 }
+
+const textarea = document.getElementById("portList");
+
+textarea.addEventListener("focus", function() {
+  textarea.value = ""; // Clear the textarea content
+});
