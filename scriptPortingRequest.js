@@ -30,10 +30,7 @@ function formatPort() {
 
     const lineCount = tableRows.split('<tr>').length - 1;
     counterElement.textContent = `Total lines: ${lineCount}`;
-}
 
-
-function copyText() {
     // Get the table element
     var tableElement = document.getElementById("formattedPort");
 
