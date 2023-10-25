@@ -1,3 +1,19 @@
-.active{
-    color: blue;
+* {
+  font-family: Verdana;
+}
+
+a:link {
+  color: blue;
+}
+
+a:visited {
+  color: blue;
+}
+
+a:hover {
+  color: red;
+}
+
+a:active {
+  color: green;
 }
