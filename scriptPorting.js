@@ -1,4 +1,4 @@
-function convertToPort(input, addSip) {
+function convertToPort(input, addSip, port) {
     // Split the input based on either a comma or a space
     const itemsArray = input.split(/[, \n]+/);
 
@@ -26,8 +26,14 @@ function convertToPort(input, addSip) {
     const itemCount = itemsArray.length;
 
 	// Work out title
-	let sipLine = addSip ? 'Sipline and ' : '';
-	let title = itemCount + ' x ' + sipLine + 'DDI';
+	let sipLine = addSip ? 'Sipline and ' : '';;
+
+    let title;
+    if (port) {
+        title = `${itemCount} x ${sipLine}DDI`;
+    } else {
+        title = `${itemCount} x Cease billing`;
+    }
 	
 	// Add title
 	tableRows = `<tr><td>${title}</td></tr><tr><td>&nbsp;</td></tr>` + tableRows;
@@ -36,15 +42,24 @@ function convertToPort(input, addSip) {
 	const date = new Date();
 	
 	// Add porting fee & date
-	tableRows += `<tr><td>&nbsp;</td></tr><tr><td>${itemCount} x Porting Fee<td></tr>`;
+    let fee;
+    if (port) {
+        fee = `${itemCount} x Porting Fee`;
+    } else if (addSip) {
+        fee = `${itemCount} x Outport Fees to xx SOM xxxxxx`;
+    } else {
+        fee = 'No Outport Fee';
+    }
+
+	tableRows += `<tr><td>&nbsp;</td></tr><tr><td>${fee}<td></tr>`;
 	tableRows += '<tr><td>' + date.getDate() + '/' + String(date.getMonth() + 1).padStart(2, '0') + '</td></tr>';
 
     return { tableRows, itemCount };
 }
 
-function formatPort(addSip) {
+function formatPort(addSip, port = false) {
     const inputPortList = document.getElementById('portList').value;
-    const { tableRows, itemCount } = convertToPort(inputPortList, addSip);
+    const { tableRows, itemCount } = convertToPort(inputPortList, addSip, port);
     const formattedTableElement = document.getElementById('formattedPort');
     const counterElement = document.getElementById('counter');
 

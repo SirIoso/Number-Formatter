@@ -22,8 +22,10 @@
   <textarea id="portList" rows="8" cols="50" placeholder="Paste your 0xxxxxx numbers here. They can be separated by commas or spaces. It will return in the format 0x xxxxxx."></textarea>
 </label>
 <br>
-<button onclick="formatPort(1)">Create Billing Ports (Sipline & DDI)</button>&nbsp;&nbsp;
-<button onclick="formatPort(0)">Create Billing Ports (DDI)</button>
+<button onclick="formatPort(1, true)">Create Billing Ports (Sipline & DDI)</button>&nbsp;&nbsp;
+<button onclick="formatPort(0, true)">Create Billing Ports (DDI)</button>
+<button onclick="formatPort(1, false)">Cease Billing (with Outport Fee)</button>
+<button onclick="formatPort(0, false)">Cease Billing (NO Outport Fee)</button>
 <div>
   <h2>Formatted Ports for Billing:</h2>
   <p id="counter"></p>
