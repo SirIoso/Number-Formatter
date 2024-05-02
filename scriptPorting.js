@@ -46,8 +46,10 @@ function convertToPort(input, addSip, port) {
     if (port) {
         fee = `${itemCount} x Porting Fee`;
     } else if (addSip) {
-        fee = `${itemCount} x Outport Fees to xx SOM xxxxxx`;
-    } else {
+        fee = `${itemCount} x Outport Fees to CP SOM xxxxxx`;
+    } else if (addSip) {
+        fee = `${itemCount} x Outport Fees to VF SOM xxxxxx`;
+    } else {    
         fee = 'No Outport Fee';
     }
 
