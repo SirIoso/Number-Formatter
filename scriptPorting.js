@@ -1,4 +1,4 @@
-function convertToPort(input, addSip, port) {
+function convertToPort(input, addSip, port, cp) {
     // Split the input based on either a comma or a space
     const itemsArray = input.split(/[, \n]+/);
 
@@ -45,9 +45,9 @@ function convertToPort(input, addSip, port) {
     let fee;
     if (port) {
         fee = `${itemCount} x Porting Fee`;
-    } else if (addSip) {
+    } else if (addSip && cp) {
         fee = `${itemCount} x Outport Fees to CP SOM xxxxxx`;
-    } else if (addSip) {
+    } else if (addSip && !cp) {
         fee = `${itemCount} x Outport Fees to VF SOM xxxxxx`;
     } else {    
         fee = 'No Outport Fee';
@@ -59,9 +59,9 @@ function convertToPort(input, addSip, port) {
     return { tableRows, itemCount };
 }
 
-function formatPort(addSip, port = false) {
+function formatPort(addSip, port = false, cp = false) {
     const inputPortList = document.getElementById('portList').value;
-    const { tableRows, itemCount } = convertToPort(inputPortList, addSip, port);
+    const { tableRows, itemCount } = convertToPort(inputPortList, addSip, port, cp);
     const formattedTableElement = document.getElementById('formattedPort');
     const counterElement = document.getElementById('counter');
 
