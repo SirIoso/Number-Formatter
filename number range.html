@@ -20,14 +20,14 @@
 </div>
 <h1>Group Numbers in Range</h1>
     <label for="numbers">Enter Numbers: </label><br>
-    <textarea type="text" rows="8" cols="50" id="numbers" placeholder="Enter numbers here"  onfocus="this.value=''"></textarea><br>
+    <textarea type="text" rows="10" cols="50" id="numbers" placeholder="Enter numbers here"></textarea><br>
     <button onclick="groupNumbers()">Group Numbers</button><p></p>
-    <div id="output"></div>
+    <div id="output"></div><br>
+    <button onclick="copyToClipboard()">Copy to Clipboard</button>
 
-  <h2>Formatted Numbers in Range:</h2>
-  <button onclick="copyText()">Copy Text</button>
-    
     <script>
+        let groupedResult = '';  // Variable to store the result
+
         function groupNumbers() {
             const input = document.getElementById('numbers').value;
             
@@ -56,32 +56,22 @@
             // Push the last group
             grouped.push(rangeStart === rangeEnd ? `${rangeStart}` : `${rangeStart}-${rangeEnd}`);
 
+            // Save the grouped result to a variable for copying
+            groupedResult = grouped.join('\n');
+
             // Display the result
             document.getElementById('output').innerHTML = `Grouped Ranges: <p> ${grouped.join('<br>')}`;
+        }
 
-function copyText() {
-    // Get the formatted list element
-    var formattedListDiv = document.getElementById('output');
-
-    // Create a range to select the div content
-    var range = document.createRange();
-    range.selectNode(formattedListDiv);
-
-    // Select the range
-    window.getSelection().removeAllRanges();
-    window.getSelection().addRange(range);
-
-    // Copy the selected text
-    try {
-        document.execCommand("copy");
-        alert("List copied to clipboard!");
-    } catch (err) {
-        alert("Unable to copy the list. Your browser may not support this feature.");
-    }
-
-    // Clear the selection
-    window.getSelection().removeAllRanges();
-}            
+        // Function to copy the grouped result to clipboard
+        function copyToClipboard() {
+            // Create a temporary textarea element to hold the grouped result
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = groupedResult;  // Set the value to the grouped result
+            document.body.appendChild(tempTextArea);  // Append to the body
+            tempTextArea.select();  // Select the text
+            document.execCommand('copy');  // Execute the copy command
+            document.body.removeChild(tempTextArea);  // Remove the temporary textarea
         }
     </script>
 </body>
