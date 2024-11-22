@@ -61,10 +61,7 @@
 
             // Display the result
             document.getElementById('output').innerHTML = `Grouped Ranges: <p> ${grouped.join('<br>')}`;
-        }
 
-        // Function to copy the grouped result to clipboard
-        function copyToClipboard() {
             // Create a temporary textarea element to hold the grouped result
             const tempTextArea = document.createElement('textarea');
             tempTextArea.value = groupedResult;  // Set the value to the grouped result
