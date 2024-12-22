@@ -41,7 +41,7 @@ function copyText() {
     // Copy the selected text
     try {
         document.execCommand("copy");
-        alert("List copied to clipboard!");
+        // alert("List copied to clipboard!");
     } catch (err) {
         alert("Unable to copy the list. Your browser may not support this feature.");
     }
