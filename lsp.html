@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Example</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <h1>Losing Service Notification by Bernie</h1>
+
+    <!-- Input fields for ASID -->
+    <label for="asid">Enter ASID:</label>
+    <input type="text" id="asid" placeholder="Enter ASID"><br><br>
+
+    <button onclick="generateMessage()">Generate Message</button>
+
+    <div id="notification"></div>
+
+    <script>
+        function generateMessage() {
+            // Get the value from the ASID field
+            let asid = document.getElementById("asid").value;
+
+            // Check if ASID is provided
+            if (asid) {
+                // Create the message using the entered ASID
+let message = `Losing service notification ASID ${asid}
+\n\nHi Team,\n
+We have received notification that your customer with connection ${asid} has been churned to another provider.
+\nPlease note billing will now be ceased, and if the customer is in a contract early termination charges may apply.`;
+                
+                // Display the message in the HTML
+                document.getElementById("notification").innerHTML = `<pre>${message}</pre>`;
+
+                // Copy the message to the clipboard
+                copyToClipboard(message);
+            } else {
+                // If ASID is empty, display an error message
+                document.getElementById("notification").innerHTML = "<p>Please enter an ASID.</p>";
+            }
+        }
+
+        function copyToClipboard(message) {
+            // Create a temporary textarea element to copy the message
+            let tempTextArea = document.createElement("textarea");
+            tempTextArea.value = message;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempTextArea);
+
+            // Alert the user that the message has been copied
+            // alert("Message copied to clipboard!");
+        }
+    </script>
+</body>
+</html>
