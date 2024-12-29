@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>BAU-Ops Tools</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <h1>Enable Orders on Hold by Bernie</h1>
+  <p id="order-status"></p>
+
+  <script>
+    // Function to get the current day and month
+    function getOrderStatus() {
+      const today = new Date();
+      const day = String(today.getDate()).padStart(2, '0');  // Ensure 2 digits for day
+      const month = String(today.getMonth() + 1).padStart(2, '0');  // Months are 0-indexed, so add 1
+     
+      // Replace yy with day and zz with month in the given string template
+      return `Enable order(s) on hold - ${day}/${month}\n\n\n` +
+             `Hi Team, \n\n` + 
+             `Please find the below order(s) on hold with Enable.\n\n` + 
+             `xxxx\n\n` + 
+             `Please action accordingly`;
+    }
+
+    // Function to copy the order status to clipboard
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text)
+        .then(() => {
+          console.log('Text copied to clipboard');
+        })
+        .catch((error) => {
+          console.error('Error copying text: ', error);
+        });
+    }
+
+    // Get the order status and display it in the element
+    const orderStatus = getOrderStatus();
+    document.getElementById('order-status').textContent = orderStatus;
+
+    // Copy the order status to the clipboard
+    copyToClipboard(orderStatus);
+  </script>
+</body>
+</html>
