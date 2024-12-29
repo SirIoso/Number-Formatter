@@ -21,3 +21,7 @@ a:active {
   color: blue;
   text-decoration: none;
 }
+
+#order-status {
+  white-space: pre-wrap; /* Ensures the formatting (newlines) is maintained */
+}
