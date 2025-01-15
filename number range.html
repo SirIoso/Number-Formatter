@@ -27,50 +27,50 @@
     <div id="output"></div><br>
 
     <script>
-        let groupedResult = '';  // Variable to store the result
+    let groupedResult = '';  // Variable to store the result
 
-        function groupNumbers() {
-            const input = document.getElementById('numbers').value;
-            
-            // Extract numbers from the input and convert them into an array of numbers
-            const numbers = input.split(/[, \n]+/).map(num => parseInt(num.trim())).filter(num => !isNaN(num));
+    function groupNumbers() {
+        const input = document.getElementById('numbers').value;
+        
+        // Extract numbers from the input and convert them into an array of numbers
+        const numbers = input.split(/[, \n]+/).map(num => parseInt(num.trim())).filter(num => !isNaN(num));
 
-            // Sort numbers in ascending order
-            numbers.sort((a, b) => a - b);
+        // Remove duplicates using Set and sort numbers in ascending order
+        const uniqueNumbers = [...new Set(numbers)].sort((a, b) => a - b);
 
-            let grouped = [];
-            let rangeStart = numbers[0];
-            let rangeEnd = numbers[0];
+        let grouped = [];
+        let rangeStart = uniqueNumbers[0];
+        let rangeEnd = uniqueNumbers[0];
 
-            // Iterate through the sorted numbers and group consecutive numbers into ranges
-            for (let i = 1; i < numbers.length; i++) {
-                if (numbers[i] === rangeEnd + 1) {
-                    rangeEnd = numbers[i];
-                } else {
-                    // If the current number is not consecutive, push the range
-                    grouped.push(rangeStart === rangeEnd ? `${rangeStart}` : `${rangeStart}-${rangeEnd}`);
-                    rangeStart = numbers[i];
-                    rangeEnd = numbers[i];
-                }
+        // Iterate through the sorted numbers and group consecutive numbers into ranges
+        for (let i = 1; i < uniqueNumbers.length; i++) {
+            if (uniqueNumbers[i] === rangeEnd + 1) {
+                rangeEnd = uniqueNumbers[i];
+            } else {
+                // If the current number is not consecutive, push the range
+                grouped.push(rangeStart === rangeEnd ? `${rangeStart}` : `${rangeStart}-${rangeEnd}`);
+                rangeStart = uniqueNumbers[i];
+                rangeEnd = uniqueNumbers[i];
             }
-
-            // Push the last group
-            grouped.push(rangeStart === rangeEnd ? `${rangeStart}` : `${rangeStart}-${rangeEnd}`);
-
-            // Save the grouped result to a variable for copying
-            groupedResult = grouped.join('\n');
-
-            // Display the result
-            document.getElementById('output').innerHTML = `Grouped Ranges: <p> ${grouped.join('<br>')}`;
-
-            // Create a temporary textarea element to hold the grouped result
-            const tempTextArea = document.createElement('textarea');
-            tempTextArea.value = groupedResult;  // Set the value to the grouped result
-            document.body.appendChild(tempTextArea);  // Append to the body
-            tempTextArea.select();  // Select the text
-            document.execCommand('copy');  // Execute the copy command
-            document.body.removeChild(tempTextArea);  // Remove the temporary textarea
         }
-    </script>
+
+        // Push the last group
+        grouped.push(rangeStart === rangeEnd ? `${rangeStart}` : `${rangeStart}-${rangeEnd}`);
+
+        // Save the grouped result to a variable for copying
+        groupedResult = grouped.join('\n');
+
+        // Display the result
+        document.getElementById('output').innerHTML = `Grouped Ranges: <p> ${grouped.join('<br>')}`;
+
+        // Create a temporary textarea element to hold the grouped result
+        const tempTextArea = document.createElement('textarea');
+        tempTextArea.value = groupedResult;  // Set the value to the grouped result
+        document.body.appendChild(tempTextArea);  // Append to the body
+        tempTextArea.select();  // Select the text
+        document.execCommand('copy');  // Execute the copy command
+        document.body.removeChild(tempTextArea);  // Remove the temporary textarea
+    }
+</script>
 </body>
 </html>
