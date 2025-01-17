@@ -32,5 +32,33 @@
   </table>
 </div>
 <script src="scriptPorting.js"></script>
+
+<script>
+        function generateOutport(type) {
+            // Get current date and month
+            var currentDate = new Date();
+            var day = currentDate.getDate();  // Get current day
+            var month = currentDate.getMonth() + 1;  // Get current month (0-11, so add 1)
+
+            // Set the appropriate text based on the button clicked
+            var outputText = "";
+            if (type === "CP") {
+                outputText = "1 x Outport Fees to CP SOM xxxxxx\n" + day + "/" + month;
+            } else if (type === "VF") {
+                outputText = "1 x Outport Fees to VF SOM xxxxxx\n" + day + "/" + month;
+            }
+
+            // Update the content of the div with the new string
+            document.getElementById("output").innerHTML = outputText.replace(/\n/g, '<br>');
+        }
+    </script>
+</head>
+<body>
+
+    <!-- Buttons to trigger the output generation -->
+    <button onclick="generateOutport('CP')">CP</button> &nbsp; <button onclick="generateOutport('VF')">VF</button>
+    
+    <!-- Placeholder for the generated output -->
+    <p id="output"></p>  
 </body>
 </html>
