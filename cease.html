@@ -35,24 +35,41 @@
 
 <h1>For VISPs</h1>  
 <script>
-        function generateOutport(type) {
-            // Get current date and month
-            var currentDate = new Date();
-            var day = currentDate.getDate();  // Get current day
-            var month = currentDate.getMonth() + 1;  // Get current month (0-11, so add 1)
+    function generateOutport(type) {
+        // Get current date and month
+        var currentDate = new Date();
+        var day = currentDate.getDate();  // Get current day
+        var month = currentDate.getMonth() + 1;  // Get current month (0-11, so add 1)
 
-            // Set the appropriate text based on the button clicked
-            var outputText = "";
-            if (type === "CP") {
-                outputText = "1 x Outport Fees to CP SOM xxxxxx\n" + day + "/" + month;
-            } else if (type === "VF") {
-                outputText = "1 x Outport Fees to VF SOM xxxxxx\n" + day + "/" + month;
-            }
-
-            // Update the content of the div with the new string
-            document.getElementById("output").innerHTML = outputText.replace(/\n/g, '<br>');
+        // Set the appropriate text based on the button clicked
+        var outputText = "";
+        if (type === "CP") {
+            outputText = "1 x Outport Fees to CP SOM xxxxxx\n" + day + "/" + month;
+        } else if (type === "VF") {
+            outputText = "1 x Outport Fees to VF SOM xxxxxx\n" + day + "/" + month;
         }
-    </script>
+
+        // Update the content of the div with the new string
+        var outputDiv = document.getElementById("output");
+        outputDiv.innerHTML = outputText.replace(/\n/g, '<br>');
+
+        // Call the copy function
+        copyToClipboard(outputText);
+    }
+
+    function copyToClipboard(text) {
+        // Create a temporary text area element to copy the text
+        var textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+
+        // Optional: Alert or feedback to the user
+        // alert('Copied to clipboard!');
+    }
+</script>
 
     <!-- Buttons to trigger the output generation -->
     <button onclick="generateOutport('CP')">CP</button> &nbsp; <button onclick="generateOutport('VF')">VF</button>
