@@ -21,13 +21,12 @@
 </div>
 <h1>List for BAU Ops</h1>
 <label>
-  <textarea id="itemList" rows="8" cols="50" placeholder="Paste your order IDs or ASIDs as a list or separated by commas, then send to Rebecca or Ilse in the software team."></textarea>
+  <textarea id="itemList" rows="8" cols="50" placeholder="Paste your order IDs or ASIDs as a list or separated by commas, then send to Rebecca or Ilse in the software team." onfocus="this.value=''; return false;"></textarea>
 </label>
 <br>
 <button onclick="formatList()">Create List</button>
 <div>
   <h2>Formatted List of Items for BAU Ops:</h2>
-  <button onclick="copyText()">Copy Text</button><br><br>
   <div id="formattedList"></div>
 </div>
 
