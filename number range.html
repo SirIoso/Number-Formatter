@@ -27,50 +27,56 @@
     <div id="output"></div><br>
 
     <script>
-    let groupedResult = '';  // Variable to store the result
+let groupedResult = '';  // Variable to store the result
 
-    function groupNumbers() {
-        const input = document.getElementById('numbers').value;
-        
-        // Extract numbers from the input and convert them into an array of numbers
-        const numbers = input.split(/[, \n]+/).map(num => parseInt(num.trim())).filter(num => !isNaN(num));
+function groupNumbers() {
+    const input = document.getElementById('numbers').value;
 
-        // Remove duplicates using Set and sort numbers in ascending order
-        const uniqueNumbers = [...new Set(numbers)].sort((a, b) => a - b);
+    // Extract values as trimmed strings and remove empty entries
+    const numbers = input
+        .split(/[, \n]+/)
+        .map(num => num.trim())
+        .filter(num => num !== '');
 
-        let grouped = [];
-        let rangeStart = uniqueNumbers[0];
-        let rangeEnd = uniqueNumbers[0];
+    // Remove duplicates and sort lexicographically
+    const uniqueNumbers = [...new Set(numbers)].sort();
 
-        // Iterate through the sorted numbers and group consecutive numbers into ranges
-        for (let i = 1; i < uniqueNumbers.length; i++) {
-            if (uniqueNumbers[i] === rangeEnd + 1) {
-                rangeEnd = uniqueNumbers[i];
-            } else {
-                // If the current number is not consecutive, push the range
-                grouped.push(rangeStart === rangeEnd ? `${rangeStart}` : `${rangeStart}-${rangeEnd}`);
-                rangeStart = uniqueNumbers[i];
-                rangeEnd = uniqueNumbers[i];
-            }
+    let grouped = [];
+    let rangeStart = uniqueNumbers[0];
+    let rangeEnd = uniqueNumbers[0];
+
+    // Helper function to check if two strings are consecutive numeric strings
+    const isConsecutive = (a, b) => {
+        // Only works if both strings have the same length and are numeric
+        return a.length === b.length && (parseInt(b) === parseInt(a) + 1);
+    };
+
+    // Iterate through the sorted string numbers and group them
+    for (let i = 1; i < uniqueNumbers.length; i++) {
+        if (isConsecutive(rangeEnd, uniqueNumbers[i])) {
+            rangeEnd = uniqueNumbers[i];
+        } else {
+            grouped.push(rangeStart === rangeEnd ? `${rangeStart}` : `${rangeStart}-${rangeEnd}`);
+            rangeStart = uniqueNumbers[i];
+            rangeEnd = uniqueNumbers[i];
         }
-
-        // Push the last group
-        grouped.push(rangeStart === rangeEnd ? `${rangeStart}` : `${rangeStart}-${rangeEnd}`);
-
-        // Save the grouped result to a variable for copying
-        groupedResult = grouped.join('\n');
-
-        // Display the result
-        document.getElementById('output').innerHTML = `Grouped Ranges: <p> ${grouped.join('<br>')}`;
-
-        // Create a temporary textarea element to hold the grouped result
-        const tempTextArea = document.createElement('textarea');
-        tempTextArea.value = groupedResult;  // Set the value to the grouped result
-        document.body.appendChild(tempTextArea);  // Append to the body
-        tempTextArea.select();  // Select the text
-        document.execCommand('copy');  // Execute the copy command
-        document.body.removeChild(tempTextArea);  // Remove the temporary textarea
     }
+
+    // Push the last group
+    grouped.push(rangeStart === rangeEnd ? `${rangeStart}` : `${rangeStart}-${rangeEnd}`);
+
+    // Save and show the result
+    groupedResult = grouped.join('\n');
+    document.getElementById('output').innerHTML = `Grouped Ranges: <p>${grouped.join('<br>')}</p>`;
+
+    // Copy to clipboard
+    const tempTextArea = document.createElement('textarea');
+    tempTextArea.value = groupedResult;
+    document.body.appendChild(tempTextArea);
+    tempTextArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempTextArea);
+}
 </script>
 </body>
 </html>
