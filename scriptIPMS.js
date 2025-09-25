@@ -59,3 +59,8 @@ const textarea = document.getElementById("ipmsList");
 textarea.addEventListener("focus", function() {
   textarea.value = ""; // Clear the textarea content
 });
+
+// Strip trailing spaces from textarea input
+textarea.addEventListener("input", function () {
+  this.value = this.value.replace(/\s+$/g, "");
+});
