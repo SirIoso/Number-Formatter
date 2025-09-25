@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" type="text/css" href="styles.css" />
+  <title>BAU-Ops Tools</title>
+</head>
+<body>
+
+<div>
+  <ul>
+    <li><a href="cease.html">Cease Billing Format</a></li>
+    <li><a href="port.html">Billing Format</a></li>
+    <li><a href="ipms.html"><b>IPMS Format</b></a></li>
+    <li><a href="devoli.html">Devoli Format</a></li>
+    <li><a href="list.html">List for BAU Ops</a></li>
+    <li><a href="range.html">Extract Range Format</a></li>
+    <li><a href="number range.html">Group Range Format</a></li>
+    <li><a href="lsp.html">LSP Notification</a></li>
+    <li><a href="enable.html">Enable Orders on Hold</a></li>
+    <li><a href="billing.html">For Billing</a></li>
+  </ul>
+</div>
+<h1>For Billing</h1>
+<label>
+  <textarea id="input" rows="8" cols="50"></textarea>
+</label>
+<br>
+<button onclick="formatNumbers()">Format</button>
+
+<div>
+  <h2>Numbers for Billing 0xxxxxxx to 0x xxxxxx</h2>
+  <pre id="output"></pre>
+
+  <script>
+    function formatNumbers() {
+      const input = document.getElementById("input").value.trim();
+      const parts = input.split(/[\s,]+/); // split by space or comma
+      let result = [];
+
+      parts.forEach(part => {
+        if (part.includes("-")) {
+          // Handle range (e.g. 091234560-091234569)
+          const [start, end] = part.split("-").map(num => num.trim());
+          if (start.length === end.length) {
+            let startNum = parseInt(start, 10);
+            let endNum = parseInt(end, 10);
+            for (let i = startNum; i <= endNum; i++) {
+              const numStr = i.toString().padStart(start.length, "0");
+              result.push(numStr.slice(0, 2) + " " + numStr.slice(2));
+            }
+          }
+        } else if (part) {
+          // Single number
+          const clean = part.replace(/\D/g, ""); // remove non-digits
+          if (clean.length >= 9) {
+            result.push(clean.slice(0, 2) + " " + clean.slice(2));
+          }
+        }
+      });
+
+      document.getElementById("output").textContent = result.join("\n");
+    }
+  </script>
+</body>
+</html>
