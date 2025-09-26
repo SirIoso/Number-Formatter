@@ -61,5 +61,11 @@
       document.getElementById("output").textContent = result.join("\n");
     }
   </script>
+  <script>
+  document.getElementById("input").addEventListener("focus", function() {
+    this.value = "";
+  });
+</script>
 </body>
 </html>
+
