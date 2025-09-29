@@ -10,17 +10,17 @@
   <ul>
     <li><a href="cease.html">Cease Billing Format</a></li>
     <li><a href="port.html">Billing Format</a></li>
-    <li><a href="ipms.html"><b>IPMS Format</b></a></li>
+    <li><a href="ipms.html">IPMS Format</a></li>
     <li><a href="devoli.html">Devoli Format</a></li>
     <li><a href="list.html">List for BAU Ops</a></li>
     <li><a href="range.html">Extract Range Format</a></li>
     <li><a href="number range.html">Group Range Format</a></li>
     <li><a href="lsp.html">LSP Notification</a></li>
     <li><a href="enable.html">Enable Orders on Hold</a></li>
-    <li><a href="billing.html">For Billing</a></li>
+    <li><a href="billing.html"><b>Convert to Billing Fromat</b></a></li>
   </ul>
 </div>
-<h1>For Billing</h1>
+<h1>Convert to Billing Format</h1>
 <label>
   <textarea id="input" rows="8" cols="50"></textarea>
 </label>
@@ -58,14 +58,24 @@
         }
       });
 
-      document.getElementById("output").textContent = result.join("\n");
+      const output = result.join("\n");
+      document.getElementById("output").textContent = output;
+
+      // --- Copy to clipboard automatically ---
+      if (output) {
+        navigator.clipboard.writeText(output).then(() => {
+          console.log("Copied to clipboard!");
+        }).catch(err => {
+          console.error("Failed to copy: ", err);
+        });
+      }
     }
   </script>
+
   <script>
-  document.getElementById("input").addEventListener("focus", function() {
-    this.value = "";
-  });
-</script>
+    document.getElementById("input").addEventListener("focus", function() {
+      this.value = "";
+    });
+  </script>
 </body>
 </html>
-
