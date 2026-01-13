@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,31 +17,50 @@
     <li><a href="number range.html">Group Range Format</a></li>
     <li><a href="lsp.html">LSP Notification</a></li>
     <li><a href="enable.html">Enable Orders on Hold</a></li>
-    <li><a href="billing.html"><b>Convert to Billing Fromat</b></a></li>
+    <li><a href="billing.html"><b>Convert to Billing Format</b></a></li>
   </ul>
 </div>
+
 <h1>Convert to Billing Format by Bernie</h1>
+
 <div>
   <textarea id="inputNumbers" rows="8" cols="50"></textarea>
-  <p><button id="btnProcess">Format</button></p>
-  <h2>Numbers for Billing 0xxxxxxx to 0x xxxxxx</h2>
+  <p>
+    <button id="btnProcess">Format</button>
+  </p>
 
+  <h2>Numbers for Billing 0xxxxxxx to 0x xxxxxx</h2>
   <pre id="output"></pre>
   <div id="message"></div>
+</div>
 
 <script>
-(function(){
+(function () {
   const MAX_EXPAND = 10000; // safety cap
 
   document.getElementById('btnProcess').addEventListener('click', processNumbers);
-  document.getElementById('btnClear').addEventListener('click', () => {
-    document.getElementById('output').textContent = '';
-    document.getElementById('message').textContent = '';
-  });
+
+  function copyToClipboard(text) {
+    if (!text) return;
+
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).catch(() => {});
+    } else {
+      // Fallback for older browsers
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+  }
 
   function processNumbers() {
     const raw = document.getElementById('inputNumbers').value || '';
-    const tokens = tokenize(raw); 
+    const tokens = tokenize(raw);
     const out = [];
     const errors = [];
 
@@ -51,7 +69,7 @@
         const t = token.replace(/\s+/g, '');
         if (!t) continue;
 
-        if (t.indexOf('-') === -1) {
+        if (!t.includes('-')) {
           const d = normalizeDigits(t);
           if (!d) { errors.push(`ignored: "${token}"`); continue; }
           out.push(formatWithSpace(d));
@@ -64,8 +82,7 @@
         const startDigits = normalizeDigits(parts[0]);
         if (!startDigits) { errors.push(`invalid start in "${token}"`); continue; }
 
-        const endCandidateRaw = parts[1];
-        const endDigitsCandidate = normalizeDigits(endCandidateRaw);
+        const endDigitsCandidate = normalizeDigits(parts[1]);
         if (!endDigitsCandidate) { errors.push(`invalid end in "${token}"`); continue; }
 
         let fullEndDigits;
@@ -77,12 +94,15 @@
         }
 
         const startNum = Number(startDigits);
-        const endNum   = Number(fullEndDigits);
-        if (Number.isNaN(startNum) || Number.isNaN(endNum)) { errors.push(`non-numeric range in "${token}"`); continue; }
+        const endNum = Number(fullEndDigits);
+
         if (endNum < startNum) { errors.push(`end < start in "${token}"`); continue; }
 
         const count = endNum - startNum + 1;
-        if (count > MAX_EXPAND) { errors.push(`range too large in "${token}" (${count} items)`); continue; }
+        if (count > MAX_EXPAND) {
+          errors.push(`range too large in "${token}" (${count} items)`);
+          continue;
+        }
 
         for (let n = startNum; n <= endNum; n++) {
           out.push(formatWithSpace(String(n)));
@@ -95,47 +115,32 @@
     const unique = [];
     const seen = new Set();
     for (const s of out) {
-      if (!seen.has(s)) { seen.add(s); unique.push(s); }
+      if (!seen.has(s)) {
+        seen.add(s);
+        unique.push(s);
+      }
     }
 
-    document.getElementById('output').textContent = unique.join('\n') || '(no results)';
+    const resultText = unique.join('\n');
+
+    document.getElementById('output').textContent = resultText || '(no results)';
     document.getElementById('message').textContent = errors.length ? errors.join('\n') : '';
+
+    // ✅ Silent auto-copy
+    if (resultText) {
+      copyToClipboard(resultText);
+    }
   }
 
   function tokenize(raw) {
     if (!raw) return [];
-    const groups = raw.split(/[,\n;]+/);
-    const tokens = [];
-    for (const group of groups) {
-      const parts = group.trim().split(/\s+/).filter(Boolean);
-      if (parts.length === 0) continue;
-      let i = 0;
-      while (i < parts.length) {
-        const cur = parts[i];
-        if (/^\d{1,3}$/.test(cur) && i + 1 < parts.length && /^[\d]+(?:-\d+)?$/.test(parts[i+1])) {
-          tokens.push(cur + parts[i+1]);
-          i += 2;
-          continue;
-        }
-        if (cur.includes('-') && i > 0 && /^\d{1,3}$/.test(parts[i-1])) {
-          const last = tokens.length ? tokens[tokens.length - 1] : null;
-          if (last === parts[i-1]) {
-            tokens[tokens.length - 1] = last + cur;
-          } else {
-            tokens.push(parts[i-1] + cur);
-          }
-          i += 1;
-          continue;
-        }
-        tokens.push(cur);
-        i += 1;
-      }
-    }
-    return tokens.map(t => t.replace(/\s+/g, '')).filter(Boolean);
+    return raw
+      .split(/[,\n;]+/)
+      .map(t => t.trim())
+      .filter(Boolean);
   }
 
   function normalizeDigits(str) {
-    if (!str) return '';
     const digits = String(str).replace(/\D/g, '');
     if (!digits) return '';
     if (digits.startsWith('64')) return '0' + digits.slice(2);
@@ -145,11 +150,10 @@
   function formatWithSpace(digits) {
     let s = String(digits);
     if (!s.startsWith('0')) s = '0' + s;
-    const prefix = s.slice(0, 2);
-    const rest   = s.slice(2);
-    return `${prefix} ${rest}`;
+    return `${s.slice(0, 2)} ${s.slice(2)}`;
   }
 })();
 </script>
+
 </body>
 </html>
