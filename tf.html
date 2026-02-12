@@ -24,10 +24,7 @@
 
 <h1>Create table for Toll-Free by Bernie</h1>
 
-<textarea id="numbersInput" rows="8" cols="50" placeholder="0800-123456
-0800123456
-0508-123456
-0508123456" onfocus="this.value=''; return false;"></textarea>
+<textarea id="numbersInput" rows="8" cols="50" onfocus="this.value=''; return false;"></textarea>
   <br />
   <button onclick="generateTable()">Generate Table</button>
 
@@ -44,7 +41,7 @@
       const validPattern = /^(0800|0508)-?\d+$/;
 
       // Create table
-      let html = '<table>';
+      let html = '<table border="1">';
       html += '<tr><th>Description</th><th>Amount 1</th><th>Amount 2</th></tr>';
 
       lines.forEach(number => {
@@ -72,3 +69,4 @@
 
 </body>
 </html>
+
