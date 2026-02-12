@@ -18,100 +18,107 @@
     <li><a href="lsp.html">LSP Notification</a></li>
     <li><a href="enable.html">Enable Orders on Hold</a></li>
     <li><a href="billing.html">Convert to Billing Format</a></li>
-    <li><a href="tf.html"><b>Toll-Free</b></a></li>
+    <li><a href="tf.html"><b>Toll-Free for Billing</b></a></li>
   </ul>
 </div>
 
-<h1>Create Table for Toll-Free by Bernie</h1>
+<h1>Toll-Free for Billing by Bernie</h1>
 <p>Enter Toll Free Numbers (one per line)</p>
 <textarea id="numbersInput" rows="8" cols="50" onfocus="this.value=''; return false;"></textarea>
-  <br><br>
+<br><br>
 
- Start Date: <input type="date" id="startDate"><br><br>
-  End Date: <input type="date" id="endDate"><br><br>
+Start Date: <input type="date" id="startDate"><br><br>
+End Date: <input type="date" id="endDate"><br><br>
 
-  <button id="formatBtn">Format</button>
+<!-- New dropdown -->
+Type:
+<select id="chargeType">
+  <option value="Credit">Credit</option>
+  <option value="Charge">Charge</option>
+</select>
+<br><br>
 
-  <h3>Output</h3>
-  <pre id="output"></pre>
+<button id="formatBtn">Format</button>
 
-  <script>
-    function normaliseNumber(num) {
-      // Remove all non-digits
-      const digits = num.replace(/\D/g, '');
+<h3>Output</h3>
+<pre id="output"></pre>
 
-      // Only handle 10-digit numbers starting with 0800 or 0508
-      if (!/^(0800|0508)\d{6}$/.test(digits)) {
-        return null;
+<script>
+  function normaliseNumber(num) {
+    const digits = num.replace(/\D/g, '');
+    if (!/^(0800|0508)\d{6}$/.test(digits)) {
+      return null;
+    }
+    return digits.slice(0, 4) + '-' + digits.slice(4);
+  }
+
+  function formatDateToDDMMYY(isoDateStr) {
+    // isoDateStr is "YYYY-MM-DD"
+    const [year, month, day] = isoDateStr.split('-');
+    return `${day}/${month}/${year.slice(-2)}`;
+  }
+
+  async function copyToClipboard(text) {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const temp = document.createElement('textarea');
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
       }
+    } catch (e) {
+      console.error('Copy failed:', e);
+    }
+  }
 
-      // Insert hyphen after first 4 digits
-      return digits.slice(0, 4) + '-' + digits.slice(4);
+  document.getElementById('formatBtn').addEventListener('click', async function () {
+    const rawText = document.getElementById('numbersInput').value;
+    const startIso = document.getElementById('startDate').value;
+    const endIso   = document.getElementById('endDate').value;
+    const type     = document.getElementById('chargeType').value;
+    const outEl    = document.getElementById('output');
+
+    if (!startIso || !endIso) {
+      const msg = 'Please enter both start and end date.';
+      outEl.textContent = msg;
+      await copyToClipboard(msg);
+      return;
     }
 
-    async function copyToClipboard(text) {
-      try {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          await navigator.clipboard.writeText(text);
-        } else {
-          // Fallback for older browsers
-          const temp = document.createElement('textarea');
-          temp.value = text;
-          document.body.appendChild(temp);
-          temp.select();
-          document.execCommand('copy');
-          document.body.removeChild(temp);
-        }
-      } catch (e) {
-        console.error('Copy failed:', e);
+    const start = formatDateToDDMMYY(startIso);
+    const end   = formatDateToDDMMYY(endIso);
+
+    const rawNumbers = rawText
+      .split(/[\n,]+/)
+      .map(s => s.trim())
+      .filter(s => s.length > 0);
+
+    const lines = [];
+
+    rawNumbers.forEach(num => {
+      const formatted = normaliseNumber(num);
+      if (formatted) {
+        lines.push(
+          'Devoli Toll Free Number for ' +
+          formatted +
+          ' Part Month ' + type +
+          ' from (' + start + ' - ' + end + ')'
+        );
+      } else {
+        lines.push('Invalid or unsupported number: ' + num);
       }
-    }
-
-    document.getElementById('formatBtn').addEventListener('click', async function () {
-      const rawText = document.getElementById('numbersInput').value;
-      const start = document.getElementById('startDate').value;
-      const end   = document.getElementById('endDate').value;
-      const outEl = document.getElementById('output');
-
-      if (!start || !end) {
-        const msg = 'Please enter both start and end date.';
-        outEl.textContent = msg;
-        await copyToClipboard(msg);
-        return;
-      }
-
-      const rawNumbers = rawText
-        .split(/[\n,]+/)       // split by newline or comma
-        .map(s => s.trim())
-        .filter(s => s.length > 0);
-
-      const lines = [];
-
-      rawNumbers.forEach(num => {
-        const formatted = normaliseNumber(num);
-        if (formatted) {
-          lines.push(
-            'Devoli Toll Free Number for ' +
-            formatted +
-            ' Part Month Credit from (' +
-            start + ' - ' + end + ')'
-          );
-        } else {
-          lines.push('Invalid or unsupported number: ' + num);
-        }
-      });
-
-      const resultText = lines.join('\n');
-      outEl.textContent = resultText;
-
-      // Automatically copy result to clipboard
-      await copyToClipboard(resultText);
     });
-  </script>
+
+    const resultText = lines.join('\n');
+    outEl.textContent = resultText;
+
+    await copyToClipboard(resultText);
+  });
+</script>
 
 </body>
 </html>
-
-
-
-
