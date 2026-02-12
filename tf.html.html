@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Toll Free Table Generator</title>
+  <style>
+    textarea {
+      width: 400px;
+      height: 150px;
+    }
+    table {
+      border-collapse: collapse;
+      margin-top: 16px;
+      width: 100%;
+      max-width: 800px;
+    }
+    th, td {
+      border: 1px solid #777;
+      padding: 4px 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h3>Enter Toll Free Numbers (one per line)</h3>
+  <textarea id="numbersInput" placeholder="0800-123456
+0800123456
+0508-123456
+0508123456"></textarea>
+  <br />
+  <button onclick="generateTable()">Generate Table</button>
+
+  <div id="tableContainer"></div>
+
+  <script>
+    function generateTable() {
+      const input = document.getElementById('numbersInput').value;
+
+      // Split by new lines, trim whitespace, and remove empty lines
+      const lines = input.split(/\r?\n/).map(l => l.trim()).filter(l => l !== '');
+
+      // Optional: validate allowed patterns (0800 or 0508 with/without dash)
+      const validPattern = /^(0800|0508)-?\d+$/;
+
+      // Create table
+      let html = '<table>';
+      html += '<tr><th>Description</th><th>Amount 1</th><th>Amount 2</th></tr>';
+
+      lines.forEach(number => {
+        if (!validPattern.test(number)) {
+          // If invalid, you can skip or still list it; here we still list it
+          // but you could `return;` here to skip instead.
+        }
+
+        const description = `Devoli Toll Free Number for ${number} Part Month Credit from (12/02/2026 - 28/02/2026)`;
+        const col2 = '0.00';
+        const col3 = '$-2.12NZD';
+
+        html += `<tr>
+          <td>${description}</td>
+          <td>${col2}</td>
+          <td>${col3}</td>
+        </tr>`;
+      });
+
+      html += '</table>';
+
+      document.getElementById('tableContainer').innerHTML = html;
+    }
+  </script>
+</body>
+</html>
