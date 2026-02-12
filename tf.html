@@ -25,50 +25,93 @@
 <h1>Create Table for Toll-Free by Bernie</h1>
 <p>Enter Toll Free Numbers (one per line)</p>
 <textarea id="numbersInput" rows="8" cols="50" onfocus="this.value=''; return false;"></textarea>
-  <br />
-  <button onclick="generateTable()">Generate Table</button>
+  <br><br>
 
-  <div id="tableContainer"></div>
+ Start Date: <input type="date" id="startDate"><br><br>
+  End Date: <input type="date" id="endDate"><br><br>
+
+  <button id="formatBtn">Format</button>
+
+  <h3>Output</h3>
+  <pre id="output"></pre>
 
   <script>
-    function generateTable() {
-      const input = document.getElementById('numbersInput').value;
+    function normaliseNumber(num) {
+      // Remove all non-digits
+      const digits = num.replace(/\D/g, '');
 
-      // Split by new lines, trim whitespace, and remove empty lines
-      const lines = input.split(/\r?\n/).map(l => l.trim()).filter(l => l !== '');
+      // Only handle 10-digit numbers starting with 0800 or 0508
+      if (!/^(0800|0508)\d{6}$/.test(digits)) {
+        return null;
+      }
 
-      // Optional: validate allowed patterns (0800 or 0508 with/without dash)
-      const validPattern = /^(0800|0508)-?\d+$/;
+      // Insert hyphen after first 4 digits
+      return digits.slice(0, 4) + '-' + digits.slice(4);
+    }
 
-      // Create table
-      let html = '<table border="1" cellspacing="5" cellpadding="5">';
-      html += '<tr><th>Description</th><th>Amount 1</th><th>Amount 2</th></tr>';
-
-      lines.forEach(number => {
-        if (!validPattern.test(number)) {
-          // If invalid, you can skip or still list it; here we still list it
-          // but you could `return;` here to skip instead.
+    async function copyToClipboard(text) {
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          // Fallback for older browsers
+          const temp = document.createElement('textarea');
+          temp.value = text;
+          document.body.appendChild(temp);
+          temp.select();
+          document.execCommand('copy');
+          document.body.removeChild(temp);
         }
+      } catch (e) {
+        console.error('Copy failed:', e);
+      }
+    }
 
-        const description = `Devoli Toll Free Number for ${number} Part Month Credit from (12/02/2026 - 28/02/2026)`;
-        const col2 = '0.00';
-        const col3 = '$-2.12NZD';
+    document.getElementById('formatBtn').addEventListener('click', async function () {
+      const rawText = document.getElementById('numbersInput').value;
+      const start = document.getElementById('startDate').value;
+      const end   = document.getElementById('endDate').value;
+      const outEl = document.getElementById('output');
 
-        html += `<tr>
-          <td>${description}</td>
-          <td>${col2}</td>
-          <td>${col3}</td>
-        </tr>`;
+      if (!start || !end) {
+        const msg = 'Please enter both start and end date.';
+        outEl.textContent = msg;
+        await copyToClipboard(msg);
+        return;
+      }
+
+      const rawNumbers = rawText
+        .split(/[\n,]+/)       // split by newline or comma
+        .map(s => s.trim())
+        .filter(s => s.length > 0);
+
+      const lines = [];
+
+      rawNumbers.forEach(num => {
+        const formatted = normaliseNumber(num);
+        if (formatted) {
+          lines.push(
+            'Devoli Toll Free Number for ' +
+            formatted +
+            ' Part Month Credit from (' +
+            start + ' - ' + end + ')'
+          );
+        } else {
+          lines.push('Invalid or unsupported number: ' + num);
+        }
       });
 
-      html += '</table>';
+      const resultText = lines.join('\n');
+      outEl.textContent = resultText;
 
-      document.getElementById('tableContainer').innerHTML = html;
-    }
+      // Automatically copy result to clipboard
+      await copyToClipboard(resultText);
+    });
   </script>
 
 </body>
 </html>
+
 
 
 
