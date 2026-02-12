@@ -1,32 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Toll Free Table Generator</title>
-  <style>
-    textarea {
-      width: 400px;
-      height: 150px;
-    }
-    table {
-      border-collapse: collapse;
-      margin-top: 16px;
-      width: 100%;
-      max-width: 800px;
-    }
-    th, td {
-      border: 1px solid #777;
-      padding: 4px 8px;
-      text-align: left;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="styles.css" />
+  <title>BAU-Ops Tools</title>
 </head>
 <body>
-  <h3>Enter Toll Free Numbers (one per line)</h3>
-  <textarea id="numbersInput" rows=8" cols="50" placeholder="0800-123456
+
+<div>
+  <ul>
+    <li><a href="cease.html">Cease Billing Format</a></li>
+    <li><a href="port.html">Billing Format</a></li>
+    <li><a href="ipms.html">IPMS Format</a></li>
+    <li><a href="devoli.html">Devoli Format</a></li>
+    <li><a href="list.html">List for BAU Ops</a></li>
+    <li><a href="range.html">Extract Range Format</a></li>
+    <li><a href="number range.html">Group Range Format</a></li>
+    <li><a href="lsp.html">LSP Notification</a></li>
+    <li><a href="enable.html">Enable Orders on Hold</a></li>
+    <li><a href="billing.html">Convert to Billing Format</a></li>
+    <li><a href="tf.html"><b>Toll-Free</b></a></li>
+  </ul>
+</div>
+
+<h1>Create table for Toll-Free by Bernie</h1>
+
+<textarea id="numbersInput" rows="8" cols="50" placeholder="0800-123456
 0800123456
 0508-123456
-0508123456"></textarea>
+0508123456" onfocus="this.value=''; return false;"></textarea>
   <br />
   <button onclick="generateTable()">Generate Table</button>
 
@@ -68,6 +69,6 @@
       document.getElementById('tableContainer').innerHTML = html;
     }
   </script>
-</body>
 
+</body>
 </html>
