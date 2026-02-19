@@ -35,42 +35,46 @@ function analyzeNumber() {
   const input = document.getElementById("phoneInput").value.trim();
   const outputEl = document.getElementById("output");
 
-  // Remove everything except digits
+  // Strip all non-digit characters
   const digitsOnly = input.replace(/\D/g, "");
 
-  // Basic validation
+  // Validate input
   if (!digitsOnly.startsWith("0800") || digitsOnly.length < 10) {
     outputEl.textContent = "Please enter a valid NZ toll free number starting with 0800 and at least 10 digits.";
     return;
   }
 
-  // Break down number components
-  const after0800 = digitsOnly.slice(4);          // digits after 0800
-  const nextSix = after0800.slice(0, 6);          // first six after 0800
-  const extras = after0800.slice(6);              // digits beyond 10 total
+  // Extract components
+  const after0800 = digitsOnly.slice(4);        // everything after 0800
+  const nextSix = after0800.slice(0, 6);        // first six digits after 0800
+  const extras = after0800.slice(6);            // anything beyond that
 
   const xxx = "0800 " + after0800;
   const yyy = "0800 " + nextSix;
-  const zzz = extras;
+  const zzz = extras;                           // may be empty
 
-  // Build string with HTML <b> elements
-  let resultHTML = `NZ Toll free numbers are 10 digits long, 0800 and then 6 digits.<br>
-  That said, a caller can dial as many numbers as they like and the call will still make it to the correct destination.<br>
-  For example, <b>${xxx}</b> is the full number - however if a caller was to dial <b>${xxx}${zzz ? " " + zzz : ""}</b> - the call would end up at <b>${yyy}</b>${zzz ? " and the final key stroke of <b>" + zzz + "</b> would not be accounted for." : "."}<br>
-  It's quite common for customer to choose more than 10 digits - with the caveat that it's only the first 10 digits that control the routing.`;
+  // Build the output text
+  let resultText = 
+`NZ Toll free numbers are 10 digits long, 0800 and then 6 digits.
 
-  // Display the result
-  outputEl.innerHTML = resultHTML;
+That said, a caller can dial as many numbers as they like and the call will still make it to the correct destination.
 
-  // Strip tags for clipboard copy (so clipboard text stays plain)
-  const plainText = outputEl.innerText;
+For example, ${xxx} is the full number - however if a caller was to dial ${xxx}${zzz ? " " + zzz : ""} - the call would end up at ${yyy}${zzz ? " and the final key stroke of " + zzz + " would not be accounted for." : "."}
+
+It's quite common for customer to choose more than 10 digits - with the caveat that it's only the first 10 digits that control the routing.`;
+
+  // Actually display the result
+  outputEl.textContent = resultText;
+
+  // Copy to clipboard
   if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(plainText)
-      .then(() => console.log("Result copied to clipboard."))
+    navigator.clipboard.writeText(resultText)
+      .then(() => console.log("Output copied to clipboard."))
       .catch(e => console.warn("Clipboard copy failed:", e));
   } else {
+    // Fallback for older browsers (copies via textarea)
     const temp = document.createElement("textarea");
-    temp.value = plainText;
+    temp.value = resultText;
     document.body.appendChild(temp);
     temp.select();
     try { document.execCommand("copy"); } catch(e) { console.warn("Fallback copy failed:", e); }
