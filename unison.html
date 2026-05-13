@@ -159,8 +159,8 @@
 
         <div class="form-group">
             <label for="inputArea">Service Details</label>
-            <textarea id="inputArea" placeholder="UNISON0000054175B01	UFF000006586960&#10;UNISON0000054176B02	UFF000006586961&#10;UNISON0000054177B03	UFF000006586962"></textarea>
-            <p class="help-text">Each line: two values separated by tab or space. One line = one service pair.</p>
+            <textarea id="inputArea" placeholder="Tyrone Cunningham	UNISON0000054175B01&#10;John Smith	UNISON0000054176B02&#10;Jane Doe	UNISON0000054177B03"></textarea>
+            <p class="help-text">Each line: Customer Name (1st word) and Service ID (2nd word) separated by tab or space.</p>
         </div>
 
         <div class="button-group">
@@ -227,8 +227,8 @@
                     return;
                 }
                 servicePairs.push({
-                    service: parts[0],
-                    customer: parts[1]
+                    service: parts[1],  // 2nd word is Service
+                    customer: parts[0]  // 1st word is Customer
                 });
             }
 
