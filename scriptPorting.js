@@ -1,6 +1,9 @@
-function convertToPort(input, addSip, port, cp, tnas) {
-  // Split the input based on either a comma or a space
-  const itemsArray = input.split(/[, \n]+/);
+function convertToPort(input, addSip, port, cp, tnas, noOutport) {
+  // Split on commas or newlines only, drop empties, strip internal spaces
+  const itemsArray = input
+    .split(/[,\n]+/)
+    .map((item) => item.replace(/\s+/g, ""))
+    .filter((item) => item !== "");
 
   // Create an empty string to store the formatted table
   let tableRows = "";
@@ -38,6 +41,8 @@ function convertToPort(input, addSip, port, cp, tnas) {
     title = `${itemCount} x ${sipLine}DDI`;
   } else if (tnas) {
     title = `${itemCount} x TNAS Devoli Toll Free`;
+  } else if (noOutport) {
+    title = `${itemCount} x DDI`;
   } else {
     title = `${itemCount} x Cease billing`;
   }
@@ -50,7 +55,9 @@ function convertToPort(input, addSip, port, cp, tnas) {
 
   // Add porting fee & date
   let fee;
-  if (port || tnas) {
+  if (noOutport) {
+    fee = "No Porting Fee";
+  } else if (port || tnas) {
     fee = `${itemCount} x Porting Fee`;
   } else if (addSip && cp) {
     fee = `${itemCount} x Outport Fees to CP SOM xxxxxx`;
@@ -71,15 +78,16 @@ function convertToPort(input, addSip, port, cp, tnas) {
   return { tableRows, itemCount };
 }
 
-function formatPort(addSip, port = false, cp = false, tnas = false) {
+function formatPort(addSip, port = false, cp = false, tnas = false, noOutport = false) {
   const inputPortList = document.getElementById("portList").value;
-  console.log(addSip, port, cp, tnas);
+  console.log(addSip, port, cp, tnas, noOutport);
   const { tableRows, itemCount } = convertToPort(
     inputPortList,
     addSip,
     port,
     cp,
-    tnas
+    tnas,
+    noOutport
   );
   const formattedTableElement = document.getElementById("formattedPort");
   const counterElement = document.getElementById("counter");
@@ -121,9 +129,13 @@ textarea.addEventListener("focus", function () {
   textarea.value = ""; // Clear the textarea content
 });
 
-// Strip trailing spaces from textarea input
+// Trim each line, drop blank lines, and strip trailing whitespace on input
 textarea.addEventListener("input", function () {
-  this.value = this.value.replace(/\s+$/g, "");
+  this.value = this.value
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line !== "")
+    .join("\n");
 });
 
 textarea.addEventListener("focus", function () {
