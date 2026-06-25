@@ -23,12 +23,10 @@
 </div>
 <h1>Billing Format</h1>
 <label>
-  <textarea id="portList" rows="8" cols="50" placeholder="Paste your 0xxxxxx numbers here. They can be separated by commas or spaces. It will return in the format 0x xxxxxx."></textarea>
+  <textarea id="portList" rows="8" cols="50" placeholder="Paste your 0xxxxxx numbers here. They can be separated by commas or spaces. It will return in the format 0x xxxxxx." onfocus="this.value=''; return false;"></textarea>
 </label>
-<br>
-<button onclick="formatPort(1, true)">SIP Line & DDI</button>&nbsp;&nbsp;
-<button onclick="formatPort(0, true)">DDI</button>&nbsp;&nbsp;
-<button onclick="formatPort(0, false, false, true)">Toll Free</button>
+<p><button onclick="formatPort(1, true)">SIP Line & DDI</button>&nbsp;&nbsp;<button onclick="formatPort(0, true)">DDI</button>&nbsp;&nbsp;<button onclick="formatPort(0, false, false, true)">Toll Free</button></p>
+<p><button onclick="formatPort(1, true, false, false, true)">SIP - No Outport</button>&nbsp;&nbsp;<button onclick="formatPort(0, false, false, false, true)">DDI - No Outport</button></p>
 <div>
   <p id="counter"></p>
   <table id="formattedPort" style="border-collapse: collapse;">
@@ -37,7 +35,6 @@
 <script src="scriptPorting.js"></script>
 </body>
 </html>
-
 
 
 
