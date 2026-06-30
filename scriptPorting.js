@@ -1,9 +1,11 @@
-function convertToPort(input, addSip, port, cp, tnas, noOutport) {
-  // Split on commas or newlines only, drop empties, strip internal spaces
-  const itemsArray = input
-    .split(/[,\n]+/)
-    .map((item) => item.replace(/\s+/g, ""))
-    .filter((item) => item !== "");
+function convertToPort(input, addSip, port, cp, tnas, noOutport, teams) {
+  // Split on commas, newlines, or spaces, drop empties, strip internal spaces, remove duplicates
+  const itemsArray = [...new Set(
+    input
+      .split(/[,\n\s]+/)
+      .map((item) => item.replace(/\s+/g, ""))
+      .filter((item) => item !== "")
+  )];
 
   // Create an empty string to store the formatted table
   let tableRows = "";
@@ -37,7 +39,9 @@ function convertToPort(input, addSip, port, cp, tnas, noOutport) {
   let sipLine = addSip ? "Sipline and " : "";
 
   let title;
-  if (port) {
+  if (teams) {
+    title = `${itemCount} x DDI (Teams)`;
+  } else if (port) {
     title = `${itemCount} x ${sipLine}DDI`;
   } else if (tnas) {
     title = `${itemCount} x TNAS Devoli Toll Free`;
@@ -55,7 +59,9 @@ function convertToPort(input, addSip, port, cp, tnas, noOutport) {
 
   // Add porting fee & date
   let fee;
-  if (noOutport) {
+  if (teams) {
+    fee = `${itemCount} x Porting Fee`;
+  } else if (noOutport) {
     fee = "No Porting Fee";
   } else if (port || tnas) {
     fee = `${itemCount} x Porting Fee`;
@@ -78,16 +84,17 @@ function convertToPort(input, addSip, port, cp, tnas, noOutport) {
   return { tableRows, itemCount };
 }
 
-function formatPort(addSip, port = false, cp = false, tnas = false, noOutport = false) {
+function formatPort(addSip, port = false, cp = false, tnas = false, noOutport = false, teams = false) {
   const inputPortList = document.getElementById("portList").value;
-  console.log(addSip, port, cp, tnas, noOutport);
+  console.log(addSip, port, cp, tnas, noOutport, teams);
   const { tableRows, itemCount } = convertToPort(
     inputPortList,
     addSip,
     port,
     cp,
     tnas,
-    noOutport
+    noOutport,
+    teams
   );
   const formattedTableElement = document.getElementById("formattedPort");
   const counterElement = document.getElementById("counter");
@@ -129,15 +136,6 @@ textarea.addEventListener("focus", function () {
   textarea.value = ""; // Clear the textarea content
 });
 
-// Trim each line, drop blank lines, and strip trailing whitespace on input
-textarea.addEventListener("input", function () {
-  this.value = this.value
-    .split("\n")
-    .map((line) => line.trim())
-    .filter((line) => line !== "")
-    .join("\n");
-});
-
 textarea.addEventListener("focus", function () {
   textarea.value = ""; // Clear the textarea content
-});
+});  
