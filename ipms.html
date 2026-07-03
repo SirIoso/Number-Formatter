@@ -4,8 +4,9 @@
   <link rel="stylesheet" type="text/css" href="styles.css" />
   <title>BAU-Ops Tools</title>
 </head>
+<script>
+</script>
 <body>
-
 <div>
   <ul>
     <li><a href="cease.html">Cease Billing Format</a></li>
@@ -27,16 +28,13 @@
   <textarea id="ipmsList" rows="8" cols="50" placeholder="Paste your 64xxxxxx or 61xxxxx numbers here. They can be separated by commas or spaces. It will return in the format 0xxxxxxx."></textarea>
 </label>
 <br>
-<button onclick="formatIpms()">Create Table</button>
-
+<button onclick="formatIpms()">Convert</button>
 <div>
   <h2>Numbers for IPMS 64xxxxxxx to 0xxxxxxx:</h2>
   <p id="counter"></p>
   <table id="formattedIpms" style="border-collapse: collapse;">
-
   </table>
 </div>
-
 <script src="scriptIPMS.js"></script>
 </body>
 </html>
