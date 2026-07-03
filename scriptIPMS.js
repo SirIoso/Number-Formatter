@@ -1,66 +1,38 @@
 function convertToIpms(input) {
-    // Split the input based on either a comma or a space
-    const itemsArray = input.split(/[, \n]+/);
-
-    // Create an empty string to store the formatted table
+    const itemsArray = input.split(/[, \n]+/).filter(item => item.trim() !== '');
     let tableRows = '';
-
-    // Loop through the itemsArray and format each item
+    const plainLines = [];
     itemsArray.forEach((item) => {
-        // Remove the first two characters and replace them with '0'
         const formattedItem = '0' + item.substring(2);
-        // Add a new row to the table with the formatted item as the content of the cell
         tableRows += `<tr><td>${formattedItem}</td></tr>`;
+        plainLines.push(formattedItem);
     });
-
-    // Update the item count
     const itemCount = itemsArray.length;
-
-    return { tableRows, itemCount };
+    const plainText = plainLines.join('\n');
+    return { tableRows, itemCount, plainText };
 }
-
 function formatIpms() {
     const inputIpmsList = document.getElementById('ipmsList').value;
-    const { tableRows, itemCount } = convertToIpms(inputIpmsList);
+    const { tableRows, itemCount, plainText } = convertToIpms(inputIpmsList);
     const formattedTableElement = document.getElementById('formattedIpms');
     const counterElement = document.getElementById('counter');
-
-    // Update the formatted table in the HTML
     formattedTableElement.innerHTML = tableRows;
-
-    // Update the item count in the HTML
     counterElement.textContent = `Total items: ${itemCount}`;
-
-    // Get the formatted list element
-    var formattedIpmsDiv = document.getElementById("formattedIpms");
-
-    // Create a range to select the div content
-    var range = document.createRange();
-    range.selectNode(formattedIpmsDiv);
-
-    // Select the range
-    window.getSelection().removeAllRanges();
-    window.getSelection().addRange(range);
-
-    // Copy the selected text
-    try {
-        document.execCommand("copy");
-        // alert("List copied to clipboard!");
-    } catch (err) {
-        // alert("Unable to copy the list. Your browser may not support this feature.");
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(plainText).catch(() => {});
+    } else {
+        const temp = document.createElement('textarea');
+        temp.value = plainText;
+        document.body.appendChild(temp);
+        temp.select();
+        try { document.execCommand("copy"); } catch (err) {}
+        document.body.removeChild(temp);
     }
-
-    // Clear the selection
-    window.getSelection().removeAllRanges();
 }
-
 const textarea = document.getElementById("ipmsList");
-
 textarea.addEventListener("focus", function() {
-  textarea.value = ""; // Clear the textarea content
+  textarea.value = "";
 });
-
-// Strip trailing spaces from textarea input
 textarea.addEventListener("input", function () {
   this.value = this.value.replace(/\s+$/g, "");
 });
