@@ -1,66 +1,66 @@
 function convertToDevoli(input) {
-    // Split the input based on either a comma or a space
-    const itemsArray = input.split(/[, \n]+/);
+    // Split on commas, spaces, or newlines, and drop empties
+    const itemsArray = input
+        .split(/[, \n]+/)
+        .filter((item) => item !== "");
 
-    // Create an empty string to store the formatted table
-    let tableRows = '';
-
-    // Loop through the itemsArray and format each item
+    let lines = [];
     itemsArray.forEach((item) => {
-        // If the item starts with '0', keep it as is; otherwise, add '64'
+        // If the item starts with '0', replace with '64'; otherwise prepend '64'
         const formattedItem = item.startsWith('0') ? item.replace(/^0/, '64') : '64' + item;
-
-        // Add a new row to the table with the formatted item as the content of the cell
-        tableRows += `<tr><td>${formattedItem}</td></tr>`;
+        lines.push(formattedItem);
     });
 
-    // Update the item count
     const itemCount = itemsArray.length;
-
-    return { tableRows, itemCount };
+    const outputText = lines.join("\n");
+    return { outputText, itemCount };
 }
 
 function formatDevoli() {
     const inputDevoliList = document.getElementById('devoliList').value;
-    const { tableRows, itemCount } = convertToDevoli(inputDevoliList);
-    const formattedTableElement = document.getElementById('formattedDevoli');
+    const { outputText, itemCount } = convertToDevoli(inputDevoliList);
+    const formattedDevoliDiv = document.getElementById('formattedDevoli');
     const counterElement = document.getElementById('counter');
 
-    // Update the formatted table in the HTML
-    formattedTableElement.innerHTML = tableRows;
+    // Update the plain-text output in the HTML
+    formattedDevoliDiv.textContent = outputText;
 
     // Update the item count in the HTML
     counterElement.textContent = `Total items: ${itemCount}`;
 
-    // Get the formatted list element
-    var formattedDevoliDiv = document.getElementById("formattedDevoli");
+    // Copy the raw string to the clipboard as PLAIN TEXT (no HTML)
+    copyPlainText(outputText);
+}
 
-    // Create a range to select the div content
-    var range = document.createRange();
-    range.selectNode(formattedDevoliDiv);
+function copyPlainText(text) {
+    // Preferred: Clipboard API writes a raw string, guaranteed plain text
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+    } else {
+        fallbackCopy(text);
+    }
+}
 
-    // Select the range
-    window.getSelection().removeAllRanges();
-    window.getSelection().addRange(range);
-
-    // Copy the selected text
+function fallbackCopy(text) {
+    // Fallback for older browsers: copy from a hidden textarea (still plain text)
+    const temp = document.createElement("textarea");
+    temp.value = text;
+    temp.style.position = "fixed";
+    temp.style.opacity = "0";
+    document.body.appendChild(temp);
+    temp.select();
     try {
         document.execCommand("copy");
-        // alert("List copied to clipboard!");
     } catch (err) {
         alert("Unable to copy the list. Your browser may not support this feature.");
     }
-
-    // Clear the selection
-    window.getSelection().removeAllRanges();
+    document.body.removeChild(temp);
 }
 
 const textarea = document.getElementById("devoliList");
-
 textarea.addEventListener("focus", function() {
   textarea.value = ""; // Clear the textarea content
 });
-
 // Strip trailing spaces from textarea input
 textarea.addEventListener("input", function () {
   this.value = this.value.replace(/\s+$/g, "");
