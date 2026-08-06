@@ -7,8 +7,7 @@ function convertToPort(input, addSip, port, cp, tnas, noOutport, teams) {
       .filter((item) => item !== "")
   )];
 
-  // Create an empty string to store the formatted table
-  let tableRows = "";
+  let lines = [];
 
   itemsArray.forEach((item) => {
     // Remove leading and trailing whitespaces
@@ -20,15 +19,11 @@ function convertToPort(input, addSip, port, cp, tnas, noOutport, teams) {
         ? "0" + trimmedItem.slice(2)
         : trimmedItem;
 
-    // Separate the first two characters from the rest with a space
+    // Separate characters with a space
     if (tnas) {
-      const formattedItem =
-        replacedItem.slice(0, 4) + " " + replacedItem.slice(4);
-      tableRows += `<tr><td>${formattedItem}</td></tr>`;
+      lines.push(replacedItem.slice(0, 4) + " " + replacedItem.slice(4));
     } else {
-      const formattedItem =
-        replacedItem.slice(0, 2) + " " + replacedItem.slice(2);
-      tableRows += `<tr><td>${formattedItem}</td></tr>`;
+      lines.push(replacedItem.slice(0, 2) + " " + replacedItem.slice(2));
     }
   });
 
@@ -51,13 +46,10 @@ function convertToPort(input, addSip, port, cp, tnas, noOutport, teams) {
     title = `${itemCount} x Cease billing`;
   }
 
-  // Add title
-  tableRows = `<tr><td>${title}</td></tr><tr><td>&nbsp;</td></tr>` + tableRows;
-
   // Init date
   const date = new Date();
 
-  // Add porting fee & date
+  // Work out porting fee
   let fee;
   if (teams) {
     fee = `${itemCount} x Porting Fee`;
@@ -73,21 +65,22 @@ function convertToPort(input, addSip, port, cp, tnas, noOutport, teams) {
     fee = "No Outport Fee";
   }
 
-  tableRows += `<tr><td>&nbsp;</td></tr><tr><td>${fee}<td></tr>`;
-  tableRows +=
-    "<tr><td>" +
-    date.getDate() +
-    "/" +
-    String(date.getMonth() + 1).padStart(2, "0") +
-    "</td></tr>";
+  const dateStr =
+    date.getDate() + "/" + String(date.getMonth() + 1).padStart(2, "0");
 
-  return { tableRows, itemCount };
+  // Assemble plain-text output
+  const outputText =
+    title + "\n\n" +
+    lines.join("\n") +
+    "\n\n" + fee +
+    "\n" + dateStr;
+
+  return { outputText, itemCount };
 }
 
 function formatPort(addSip, port = false, cp = false, tnas = false, noOutport = false, teams = false) {
   const inputPortList = document.getElementById("portList").value;
-  console.log(addSip, port, cp, tnas, noOutport, teams);
-  const { tableRows, itemCount } = convertToPort(
+  const { outputText, itemCount } = convertToPort(
     inputPortList,
     addSip,
     port,
@@ -96,38 +89,43 @@ function formatPort(addSip, port = false, cp = false, tnas = false, noOutport = 
     noOutport,
     teams
   );
-  const formattedTableElement = document.getElementById("formattedPort");
+
+  const formattedPortDiv = document.getElementById("formattedPort");
   const counterElement = document.getElementById("counter");
 
-  // Update the formatted table in the HTML
-  formattedTableElement.innerHTML = tableRows;
+  // Update the plain-text output in the HTML
+  formattedPortDiv.textContent = outputText;
 
   // Update the item count in the HTML
   counterElement.textContent = `Total items: ${itemCount}`;
 
-  // Get the formatted list element
-  var formattedPortDiv = document.getElementById("formattedPort");
+  // Copy the raw string to the clipboard as PLAIN TEXT (no HTML)
+  copyPlainText(outputText);
+}
 
-  // Create a range to select the div content
-  var range = document.createRange();
-  range.selectNode(formattedPortDiv);
+function copyPlainText(text) {
+  // Preferred: Clipboard API writes a raw string, guaranteed plain text
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+  } else {
+    fallbackCopy(text);
+  }
+}
 
-  // Select the range
-  window.getSelection().removeAllRanges();
-  window.getSelection().addRange(range);
-
-  // Copy the selected text
+function fallbackCopy(text) {
+  // Fallback for older browsers: copy from a hidden textarea (still plain text)
+  const temp = document.createElement("textarea");
+  temp.value = text;
+  temp.style.position = "fixed";
+  temp.style.opacity = "0";
+  document.body.appendChild(temp);
+  temp.select();
   try {
     document.execCommand("copy");
-    //alert("List copied to clipboard!");
   } catch (err) {
-    alert(
-      "Unable to copy the list. Your browser may not support this feature."
-    );
+    alert("Unable to copy the list. Your browser may not support this feature.");
   }
-
-  // Clear the selection
-  window.getSelection().removeAllRanges();
+  document.body.removeChild(temp);
 }
 
 const textarea = document.getElementById("portList");
@@ -135,7 +133,3 @@ const textarea = document.getElementById("portList");
 textarea.addEventListener("focus", function () {
   textarea.value = ""; // Clear the textarea content
 });
-
-textarea.addEventListener("focus", function () {
-  textarea.value = ""; // Clear the textarea content
-});  
