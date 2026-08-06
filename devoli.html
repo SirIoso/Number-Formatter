@@ -5,7 +5,6 @@
   <title>BAU-Ops Tools</title>
 </head>
 <body>
-
 <div>
   <ul>
     <li><a href="cease.html">Cease Billing Format</a></li>
@@ -27,14 +26,12 @@
   <textarea id="devoliList" rows="8" cols="50" placeholder="Paste your 0xxxxxx numbers here. They can be separated by commas or spaces. It will return in the format 64xxxxxxx."></textarea>
 </label>
 <br>
-<button onclick="formatDevoli()">Create Table</button>
+<button onclick="formatDevoli()">Create List</button>
 <div>
   <h2>Numbers for Devoli 0xxxxxx to 64xxxxxxx </h2>
   <p id="counter"></p>
-  <table id="formattedDevoli" style="border-collapse: collapse;">
-  </table>
+  <pre id="formattedDevoli"></pre>
 </div>
-
 <script src="scriptDevoli.js"></script>
 </body>
 </html>
