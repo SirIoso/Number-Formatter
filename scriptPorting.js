@@ -6,19 +6,15 @@ function convertToPort(input, addSip, port, cp, tnas, noOutport, teams) {
       .map((item) => item.replace(/\s+/g, ""))
       .filter((item) => item !== "")
   )];
-
   let lines = [];
-
   itemsArray.forEach((item) => {
     // Remove leading and trailing whitespaces
     const trimmedItem = item.trim();
-
     // Replace numbers starting with 61 or 64 with 0
     const replacedItem =
       trimmedItem.startsWith("61") || trimmedItem.startsWith("64")
         ? "0" + trimmedItem.slice(2)
         : trimmedItem;
-
     // Separate characters with a space
     if (tnas) {
       lines.push(replacedItem.slice(0, 4) + " " + replacedItem.slice(4));
@@ -26,13 +22,10 @@ function convertToPort(input, addSip, port, cp, tnas, noOutport, teams) {
       lines.push(replacedItem.slice(0, 2) + " " + replacedItem.slice(2));
     }
   });
-
   // Update the item count
   const itemCount = itemsArray.length;
-
   // Work out title
   let sipLine = addSip ? "Sipline and " : "";
-
   let title;
   if (teams) {
     title = `${itemCount} x DDI (Teams)`;
@@ -45,16 +38,16 @@ function convertToPort(input, addSip, port, cp, tnas, noOutport, teams) {
   } else {
     title = `${itemCount} x Cease billing`;
   }
-
   // Init date
   const date = new Date();
-
   // Work out porting fee
+  // noOutport is checked before teams so "DDI - Teams No Outport" keeps the
+  // Teams title but reports no porting fee.
   let fee;
-  if (teams) {
-    fee = `${itemCount} x Porting Fee`;
-  } else if (noOutport) {
+  if (noOutport) {
     fee = "No Porting Fee";
+  } else if (teams) {
+    fee = `${itemCount} x Porting Fee`;
   } else if (port || tnas) {
     fee = `${itemCount} x Porting Fee`;
   } else if (addSip && cp) {
@@ -64,20 +57,16 @@ function convertToPort(input, addSip, port, cp, tnas, noOutport, teams) {
   } else {
     fee = "No Outport Fee";
   }
-
   const dateStr =
     date.getDate() + "/" + String(date.getMonth() + 1).padStart(2, "0");
-
   // Assemble plain-text output
   const outputText =
     title + "\n\n" +
     lines.join("\n") +
     "\n\n" + fee +
     "\n" + dateStr;
-
   return { outputText, itemCount };
 }
-
 function formatPort(addSip, port = false, cp = false, tnas = false, noOutport = false, teams = false) {
   const inputPortList = document.getElementById("portList").value;
   const { outputText, itemCount } = convertToPort(
@@ -89,20 +78,15 @@ function formatPort(addSip, port = false, cp = false, tnas = false, noOutport = 
     noOutport,
     teams
   );
-
   const formattedPortDiv = document.getElementById("formattedPort");
   const counterElement = document.getElementById("counter");
-
   // Update the plain-text output in the HTML
   formattedPortDiv.textContent = outputText;
-
   // Update the item count in the HTML
   counterElement.textContent = `Total items: ${itemCount}`;
-
   // Copy the raw string to the clipboard as PLAIN TEXT (no HTML)
   copyPlainText(outputText);
 }
-
 function copyPlainText(text) {
   // Preferred: Clipboard API writes a raw string, guaranteed plain text
   if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -111,7 +95,6 @@ function copyPlainText(text) {
     fallbackCopy(text);
   }
 }
-
 function fallbackCopy(text) {
   // Fallback for older browsers: copy from a hidden textarea (still plain text)
   const temp = document.createElement("textarea");
@@ -127,9 +110,7 @@ function fallbackCopy(text) {
   }
   document.body.removeChild(temp);
 }
-
 const textarea = document.getElementById("portList");
-
 textarea.addEventListener("focus", function () {
   textarea.value = ""; // Clear the textarea content
 });
