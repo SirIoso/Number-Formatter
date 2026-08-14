@@ -27,12 +27,14 @@ function convertToPort(input, addSip, port, cp, tnas, noOutport, teams) {
   // Work out title
   let sipLine = addSip ? "Sipline and " : "";
   let title;
-  if (teams) {
+  // tnas is checked before teams/port/noOutport so "Toll Free - NO" keeps the
+  // TNAS title while reporting no porting fee.
+  if (tnas) {
+    title = `${itemCount} x TNAS Devoli Toll Free`;
+  } else if (teams) {
     title = `${itemCount} x DDI (Teams)`;
   } else if (port) {
     title = `${itemCount} x ${sipLine}DDI`;
-  } else if (tnas) {
-    title = `${itemCount} x TNAS Devoli Toll Free`;
   } else if (noOutport) {
     title = `${itemCount} x DDI`;
   } else {
@@ -41,8 +43,8 @@ function convertToPort(input, addSip, port, cp, tnas, noOutport, teams) {
   // Init date
   const date = new Date();
   // Work out porting fee
-  // noOutport is checked before teams so "DDI - Teams No Outport" keeps the
-  // Teams title but reports no porting fee.
+  // noOutport is checked first so any "- NO" button reports no porting fee
+  // while keeping its own title.
   let fee;
   if (noOutport) {
     fee = "No Porting Fee";
