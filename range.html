@@ -5,7 +5,6 @@
   <title>BAU-Ops Tools</title>
 </head>
 <body>
-
 <div>
   <ul>
     <li><a href="cease.html">Cease Billing Format</a></li>
@@ -16,20 +15,24 @@
     <li><a href="range.html"><b>Extract Range Format</b></a></li>
     <li><a href="number range.html">Group Range Format</a></li>
     <li><a href="lsp.html">LSP Notification</a></li>
-    <li><a href="enable.html">Enable Orders on Hold</a></li>    
+    <li><a href="enable.html">Enable Orders on Hold</a></li>
     <li><a href="toll-free.html">Toll-Free Explanation</a></li>
     <li><a href="billing.html">Convert to Billing Fromat</a></li>
     <li><a href="tf.html">Toll-Free for Billing</a></li>
   </ul>
 </div>
+
 <h1>Extract Range Format</h1>
+
 <label>
-  <textarea id="portList" rows="8" cols="50" placeholder="Paste your numbers here. They can be separated by commas or spaces and can include individual numbers too. Make sure the list doesn't end with a space or comma. There should be no spaces between dashes. Currently doesn't deal with numbers staring with zero soz lol."></textarea>
+  <textarea id="portList" rows="8" cols="50" placeholder="Paste your numbers here. Ranges can use a hyphen, an en dash or the word 'to' (033631000-033631009, 033631000 - 033631009), with or without spaces around the dash, and the shorthand 033631000-009 works too. Separate items with commas, spaces, tabs or new lines - trailing spaces and commas are fine. 033631000 is kept as is, 33631000 gets a leading zero, and 6433631000 is left in country-code format."></textarea>
 </label>
 <br>
 <button onclick="formatPort()">Extract Numbers</button>
+
 <div>
   <p id="counter"></p>
+  <p id="notes"></p>
   <pre id="formattedPort"></pre>
 </div>
 
